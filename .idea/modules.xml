@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/bitbeauty/bitbeauty.iml" filepath="$PROJECT_DIR$/bitbeauty/bitbeauty.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bitbeauty-sample/bitbeauty-sample.iml" filepath="$PROJECT_DIR$/bitbeauty-sample/bitbeauty-sample.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bitbeautysample.iml" filepath="$PROJECT_DIR$/bitbeautysample.iml" />
+    </modules>
+  </component>
+</project>
