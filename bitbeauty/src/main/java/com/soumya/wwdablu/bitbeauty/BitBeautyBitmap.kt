@@ -8,7 +8,7 @@ import android.graphics.Bitmap
 
 class BitBeautyBitmap internal constructor(bitmap: Bitmap) {
 
-    private val mBitmap:Bitmap = bitmap
+    private var mBitmap:Bitmap = bitmap
     private var mCanRecycleBitmap = false
     private var mBitmapId:String = ""
 
@@ -17,18 +17,7 @@ class BitBeautyBitmap internal constructor(bitmap: Bitmap) {
      * @return Bitmap? The actual bitmap or null
      */
     fun getBitmap() : Bitmap? {
-        return mBitmap
-    }
-
-    fun canRecycle() : Boolean {
-        return mCanRecycleBitmap
-    }
-
-    fun recycle() {
-
-        if(mCanRecycleBitmap && mBitmap.isRecycled) {
-            mBitmap.recycle()
-        }
+        return if (mBitmap.isRecycled) null else mBitmap
     }
 
     fun getIdentifier() : String {

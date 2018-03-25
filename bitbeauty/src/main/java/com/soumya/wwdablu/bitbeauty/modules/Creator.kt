@@ -10,7 +10,7 @@ import com.soumya.wwdablu.bitbeauty.BitBeautyBitmap
 /**
  * Created by soumya on 3/24/18.
  */
-internal class BitmapCreator {
+internal class Creator {
 
     @Synchronized
     fun createBitmapRGB(context: Context, width:Int, height:Int, @ColorInt color:Int) : BitBeautyBitmap? {
@@ -25,6 +25,7 @@ internal class BitmapCreator {
         return BitBeautyBitmap(bmp)
     }
 
+    @Synchronized
     fun createBitmapARGB(context: Context, width: Int, height: Int, @ColorInt color: Int, config:Bitmap.Config) : BitBeautyBitmap? {
 
         val bmp:Bitmap = Glide.get(context).bitmapPool.get(width, height, config)
@@ -37,10 +38,19 @@ internal class BitmapCreator {
         return BitBeautyBitmap(bmp)
     }
 
-    companion object {
-        private var mInstance:BitmapCreator = BitmapCreator()
+    fun erase(bitBeautyBitmap: BitBeautyBitmap, @ColorInt withColor:Int) {
 
-        internal fun getInstance() : BitmapCreator {
+        if(bitBeautyBitmap.getBitmap() == null) {
+            return
+        }
+
+        Canvas(bitBeautyBitmap.getBitmap()).drawColor(withColor)
+    }
+
+    companion object {
+        private var mInstance: Creator = Creator()
+
+        internal fun getInstance() : Creator {
             return mInstance
         }
     }
