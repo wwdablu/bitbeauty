@@ -1,5 +1,9 @@
 package com.soumya.wwdablu.bitbeauty
 
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Color
+import android.support.annotation.ColorInt
 import com.soumya.wwdablu.bitbeauty.modules.BitmapCreator
 
 /**
@@ -7,21 +11,34 @@ import com.soumya.wwdablu.bitbeauty.modules.BitmapCreator
  */
 class BitBeauty {
 
-    fun createBitmapRGB(width: Int, height: Int) : BitBeautyBitmap? {
-        return createBitmapRGB(width, height, 255, 255, 255)
+    enum class ArgbFormat {
+        ARG_4444,
+        ARGB_8888
     }
 
-    fun createBitmapRGB(width: Int, height: Int, r: Int, g:Int, b:Int) : BitBeautyBitmap? {
-        BitmapCreator().createBitmapRGB(r,g,b)
-        return null
+    fun createBitmapRGB(context:Context, width: Int, height: Int) : BitBeautyBitmap? {
+        return createBitmapRGB(context, width, height, Color.WHITE)
     }
 
-    fun createBitmapRGBA(width: Int, height: Int) : BitBeautyBitmap? {
-        return createBitmapRGBA(width, height, 255, 255, 255, 1F)
+    /**
+     * Return an empty bitmap with the provide width, height and color of the bitmap. Note that you
+     * should not call recycle on the bitmap.
+     */
+    fun createBitmapRGB(context:Context, width: Int, height: Int, @ColorInt color:Int) : BitBeautyBitmap? {
+        return BitmapCreator.getInstance().createBitmapRGB(context, width, height, color)
     }
 
-    fun createBitmapRGBA(width: Int, height: Int, r:Int, g:Int, b:Int, a:Float) : BitBeautyBitmap? {
-        return null
+    fun createBitmapARGB(context:Context, width: Int, height: Int) : BitBeautyBitmap? {
+        return createBitmapARGB(context, width, height, Color.TRANSPARENT, ArgbFormat.ARGB_8888)
+    }
+
+    fun createBitmapARGB(context:Context, width: Int, height: Int, @ColorInt colorWithAlpha:Int, format:ArgbFormat) : BitBeautyBitmap? {
+
+        var config = Bitmap.Config.ARGB_8888
+        if(ArgbFormat.ARG_4444 == format) {
+            config = Bitmap.Config.ARGB_4444
+        }
+        return BitmapCreator.getInstance().createBitmapARGB(context, width, height, colorWithAlpha, config)
     }
 
     companion object {
