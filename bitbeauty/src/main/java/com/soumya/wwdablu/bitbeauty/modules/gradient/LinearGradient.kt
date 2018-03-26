@@ -2,10 +2,8 @@ package com.soumya.wwdablu.bitbeauty.modules.gradient
 
 import android.graphics.Canvas
 import android.graphics.Paint
-import android.graphics.Shader
 import android.support.annotation.ColorInt
 import com.soumya.wwdablu.bitbeauty.BitBeautyBitmap
-
 import android.graphics.LinearGradient as AndroidLinearGradient
 
 /**
@@ -17,22 +15,27 @@ internal class LinearGradient {
     fun drawRect(bitBeautyBitmap: BitBeautyBitmap, startX:Float, startY:Float, endX:Float, endY:Float,
                @ColorInt colorArray: IntArray, stepArray: FloatArray?, mode:Gradient.Mode) {
 
-        val shaderModel = when (mode) {
-            Gradient.Mode.MIRROR -> Shader.TileMode.MIRROR
-            Gradient.Mode.REPEAT -> Shader.TileMode.REPEAT
-            Gradient.Mode.CLAMP -> Shader.TileMode.CLAMP
-        }
+        drawRect(bitBeautyBitmap, startX, startY, endX, endY, startX, startY, endX, endY, colorArray, stepArray, mode)
+    }
 
-        val linearGradient = AndroidLinearGradient(startX, startY, endX, endY, colorArray, stepArray, shaderModel)
+    @Synchronized
+    fun drawRect(bitBeautyBitmap: BitBeautyBitmap, rectStartX:Float, rectStartY:Float, rectEndX:Float, rectEndY:Float,
+                 gradStartX:Float, gradStartY:Float, gradEndX:Float, gradEndY:Float,
+                 @ColorInt colorArray: IntArray, stepArray: FloatArray?, mode:Gradient.Mode) {
+
+        val shaderModel = Gradient.convertShaderMode(mode)
+        val linearGradient = AndroidLinearGradient(gradStartX, gradStartY, gradEndX, gradEndY, colorArray, stepArray, shaderModel)
 
         val canvas = Canvas(bitBeautyBitmap.getBitmap())
         val paint = Paint(Paint.ANTI_ALIAS_FLAG)
         paint.shader = linearGradient
-        canvas.drawRect(startX, startY, endX, endY, paint)
+        canvas.drawRect(rectStartX, rectStartY, rectEndX, rectEndY, paint)
     }
 
     companion object {
         private val mInstance:LinearGradient = LinearGradient()
+
+        @Synchronized
         internal fun getInstance() : LinearGradient {
             return mInstance
         }

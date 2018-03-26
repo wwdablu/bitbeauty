@@ -56,6 +56,7 @@ class BitBeauty {
         return Creator.getInstance().createBitmapARGB(context, width, height, colorWithAlpha, config)
     }
 
+
     /**
      * Erase the content displayed on the bitmap with the provided color.
      */
@@ -88,10 +89,40 @@ class BitBeauty {
         RadialGradient.getInstance().drawCircle(bitBeautyBitmap, cx, cy, radius, dither, colorArray, stopArray, mode)
     }
 
+    /**
+     *
+     */
+    fun radialGradientCircle(bitBeautyBitmap: BitBeautyBitmap, circleX: Float, circleY: Float, radialX: Float,
+                             radialY: Float, radius: Float, dither:Boolean, @ColorInt colorArray: IntArray,
+                             stepArray: FloatArray?, mode: Gradient.Mode) {
+        RadialGradient.getInstance().drawCircle(bitBeautyBitmap, circleX, circleY, radialX, radialY, radius, dither, colorArray, stepArray, mode)
+    }
+
+    /**
+     *
+     */
+    fun radialGradientOval(bitBeautyBitmap: BitBeautyBitmap, left: Float, top: Float, right:Float, bottom:Float,
+                 dither:Boolean, @ColorInt colorArray: IntArray, stepArray: FloatArray?, mode: Gradient.Mode) {
+        RadialGradient.getInstance().drawOval(bitBeautyBitmap, left, top, right, bottom, dither, colorArray, stepArray, mode)
+    }
+
+    /**
+     *
+     */
     fun linearGradientRect(bitBeautyBitmap: BitBeautyBitmap, startX:Float, startY:Float, endX:Float, endY:Float,
                            @ColorInt colorArray: IntArray, stepArray: FloatArray?, mode:Gradient.Mode) {
 
         LinearGradient.getInstance().drawRect(bitBeautyBitmap, startX, startY, endX, endY, colorArray, stepArray, mode)
+    }
+
+    /**
+     *
+     */
+    fun linearGradientRect(bitBeautyBitmap: BitBeautyBitmap, rectStartX:Float, rectStartY:Float, rectEndX:Float, rectEndY:Float,
+                       gradStartX:Float, gradStartY:Float, gradEndX:Float, gradEndY:Float,
+                       @ColorInt colorArray: IntArray, stepArray: FloatArray?, mode:Gradient.Mode) {
+        LinearGradient.getInstance().drawRect(bitBeautyBitmap, rectStartX, rectStartY, rectEndX, rectEndY,
+                gradStartX, gradStartY, gradEndX, gradEndY, colorArray, stepArray, mode)
     }
 
     companion object {
