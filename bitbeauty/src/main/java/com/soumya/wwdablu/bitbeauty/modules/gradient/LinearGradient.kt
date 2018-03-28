@@ -9,7 +9,7 @@ import android.graphics.LinearGradient as AndroidLinearGradient
 /**
  * Created by soumya on 3/25/18.
  */
-internal class LinearGradient {
+class LinearGradient {
 
     @Synchronized
     fun drawRect(bitBeautyBitmap: BitBeautyBitmap, startX:Float, startY:Float, endX:Float, endY:Float,
@@ -19,8 +19,8 @@ internal class LinearGradient {
     }
 
     @Synchronized
-    fun drawRect(bitBeautyBitmap: BitBeautyBitmap, rectStartX:Float, rectStartY:Float, rectEndX:Float, rectEndY:Float,
-                 gradStartX:Float, gradStartY:Float, gradEndX:Float, gradEndY:Float,
+    fun drawRect(bitBeautyBitmap: BitBeautyBitmap, rectStartX:Float, rectStartY:Float, rectEndX:Float,
+                 rectEndY:Float, gradStartX:Float, gradStartY:Float, gradEndX:Float, gradEndY:Float,
                  @ColorInt colorArray: IntArray, stepArray: FloatArray?, mode:Gradient.Mode) {
 
         val shaderModel = Gradient.convertShaderMode(mode)
@@ -30,14 +30,5 @@ internal class LinearGradient {
         val paint = Paint(Paint.ANTI_ALIAS_FLAG)
         paint.shader = linearGradient
         canvas.drawRect(rectStartX, rectStartY, rectEndX, rectEndY, paint)
-    }
-
-    companion object {
-        private val mInstance:LinearGradient = LinearGradient()
-
-        @Synchronized
-        internal fun getInstance() : LinearGradient {
-            return mInstance
-        }
     }
 }

@@ -11,7 +11,7 @@ import com.bumptech.glide.request.transition.Transition
 import com.soumya.wwdablu.bitbeauty.BitBeautyBitmap
 import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
-import io.reactivex.schedulers.Schedulers
+import io.reactivex.android.schedulers.AndroidSchedulers
 
 /**
  * Created by soumya on 3/24/18.
@@ -55,7 +55,7 @@ internal class Creator {
                 }
             }
             Glide.with(context).asBitmap().load(image).into(simpleTarget)
-        }).subscribeOn(Schedulers.io())
+        }).subscribeOn(AndroidSchedulers.mainThread())
     }
 
     @Synchronized
@@ -68,7 +68,7 @@ internal class Creator {
         Canvas(bitBeautyBitmap.getBitmap()).drawColor(withColor)
     }
 
-    companion object {
+    internal companion object {
         private var mInstance: Creator = Creator()
 
         @Synchronized

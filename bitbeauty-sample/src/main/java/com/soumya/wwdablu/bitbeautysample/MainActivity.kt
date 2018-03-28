@@ -3,9 +3,18 @@ package com.soumya.wwdablu.bitbeautysample
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.widget.ImageView
 import com.soumya.wwdablu.bitbeauty.BitBeauty
+import com.soumya.wwdablu.bitbeauty.BitBeautyBitmap
 import com.soumya.wwdablu.bitbeauty.modules.gradient.Gradient
+import com.soumya.wwdablu.bitbeauty.modules.gradient.LinearGradient
+import com.soumya.wwdablu.bitbeauty.modules.gradient.RadialGradient
+import com.soumya.wwdablu.bitbeauty.modules.writer.BitmapWriter
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.observers.DisposableObserver
+import io.reactivex.schedulers.Schedulers
+import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
@@ -13,14 +22,26 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        //simpleColorBitmap()
+        val bmp = linearAndRadialGradient()
+        //writeBitmap(bmp)
+    }
+
+    fun simpleColorBitmap() {
+
+        val bmp = BitBeauty.getInstance().createBitmapRGB(this, 200, 200, Color.RED)
+        findViewById<ImageView>(R.id.iv_image).setImageBitmap((bmp!!.getBitmap()))
+    }
+
+    fun linearAndRadialGradient() : BitBeautyBitmap {
+
         val bmp = BitBeauty.getInstance().createBitmapRGB(this, 200, 200, Color.WHITE)
 
-        val ca = IntArray(2)
+        val ca = IntArray(3)
         ca[0] = Color.CYAN
         ca[1] = Color.YELLOW
-        //ca[2] = Color.MAGENTA
-        //BitBeauty.getInstance().linearGradientRect(bmp!!, 0F, 0F, 200F, 200F, ca, null, Gradient.Mode.CLAMP)
-        BitBeauty.getInstance().linearGradientRect(bmp!!, 0F, 0F, 200F, 200F, 0F, 100F, 200F, 100F, ca, null, Gradient.Mode.CLAMP)
+        ca[2] = Color.MAGENTA
+        LinearGradient().drawRect(bmp!!, 0F, 0F, 200F, 200F, 0F, 100F, 200F, 100F, ca, null, Gradient.Mode.CLAMP)
 
         val d = IntArray(3)
         d[0] = Color.RED
@@ -32,11 +53,32 @@ class MainActivity : AppCompatActivity() {
         f[1] = 0.33f
         f[2] = 0.66f
 
-        //BitBeauty.getInstance().radialGradientCircle(bmp, 100F, 100F, 50F, false, d, null, Gradient.Mode.MIRROR)
-        BitBeauty.getInstance().radialGradientOval(bmp, 0F, 80F, 200F, 120F, true, d, null, Gradient.Mode.CLAMP)
-        BitBeauty.getInstance().radialGradientCircle(bmp, 0F, 0F, 25F, 35F, 50F, false, d, null, Gradient.Mode.MIRROR)
-        BitBeauty.getInstance().radialGradientCircle(bmp, 200F, 200F, 200F, 200F, 50F, false, d, null, Gradient.Mode.CLAMP)
+        RadialGradient().drawCircle(bmp, 100F, 100F, 50F, false, d, null, Gradient.Mode.MIRROR)
 
         findViewById<ImageView>(R.id.iv_image).setImageBitmap((bmp.getBitmap()))
+
+        return bmp
+    }
+
+    fun writeBitmap(bmp:BitBeautyBitmap) {
+
+        val file = File(this.filesDir, "gradient.jpg")
+        Log.e("TAG", file.path)
+        BitmapWriter().write(bmp, file, BitmapWriter.Format.JPEG, 100)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeWith(object : DisposableObserver<File>() {
+                override fun onComplete() {
+                    //
+                }
+
+                override fun onNext(t: File) {
+                    //
+                }
+
+                override fun onError(e: Throwable) {
+                    //
+                }
+            })
     }
 }

@@ -4,10 +4,12 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.support.annotation.ColorInt
+import android.support.annotation.DrawableRes
 import com.soumya.wwdablu.bitbeauty.modules.Creator
 import com.soumya.wwdablu.bitbeauty.modules.gradient.Gradient
 import com.soumya.wwdablu.bitbeauty.modules.gradient.LinearGradient
 import com.soumya.wwdablu.bitbeauty.modules.gradient.RadialGradient
+import io.reactivex.Observable
 
 /**
  * Created by soumya on 3/23/18.
@@ -56,6 +58,10 @@ class BitBeauty {
         return Creator.getInstance().createBitmapARGB(context, width, height, colorWithAlpha, config)
     }
 
+    fun createBitmap(context: Context, @DrawableRes image:Int) : Observable<BitBeautyBitmap> {
+        return Creator.getInstance().createBitmap(context, image)
+    }
+
 
     /**
      * Erase the content displayed on the bitmap with the provided color.
@@ -65,64 +71,27 @@ class BitBeauty {
     }
 
     /**
-     * Creates a circular radial gradient using two colors on a BitBeautyBitmap.
-     * @param cx X coordinate of the center of the circle
-     * @param cy Y coordinate of the center of the circle
+     * Returns a LinearGradient instance which can be used by the application
      */
-    fun radialGradientCircle(bitBeautyBitmap: BitBeautyBitmap, cx:Float, cy:Float,
-                             radius:Float, dither:Boolean, @ColorInt startColor:Int, @ColorInt endColor:Int) {
+    fun linearGradient() : LinearGradient {
 
-        val colorArray = IntArray(2)
-        colorArray[0] = startColor
-        colorArray[1] = endColor
-        RadialGradient.getInstance().drawCircle(bitBeautyBitmap, cx, cy, radius, dither, colorArray, null, Gradient.Mode.CLAMP)
+        if(!::mLinearGradient.isInitialized) {
+            mLinearGradient = LinearGradient()
+        }
+
+        return mLinearGradient
     }
 
     /**
-     * Creates a circular radial gradient using two colors on a BitBeautyBitmap.
-     * @param cx X coordinate of the center of the circle
-     * @param cy Y coordinate of the center of the circle
+     * Returns a Radian Gradient instance which can be used by the application
      */
-    fun radialGradientCircle(bitBeautyBitmap: BitBeautyBitmap, cx:Float, cy:Float,
-                             radius:Float, dither:Boolean, @ColorInt colorArray: IntArray, stopArray: FloatArray?,
-                             mode:Gradient.Mode) {
-        RadialGradient.getInstance().drawCircle(bitBeautyBitmap, cx, cy, radius, dither, colorArray, stopArray, mode)
-    }
+    fun radialGradient() : RadialGradient {
 
-    /**
-     *
-     */
-    fun radialGradientCircle(bitBeautyBitmap: BitBeautyBitmap, circleX: Float, circleY: Float, radialX: Float,
-                             radialY: Float, radius: Float, dither:Boolean, @ColorInt colorArray: IntArray,
-                             stepArray: FloatArray?, mode: Gradient.Mode) {
-        RadialGradient.getInstance().drawCircle(bitBeautyBitmap, circleX, circleY, radialX, radialY, radius, dither, colorArray, stepArray, mode)
-    }
+        if(!::mRadialGradient.isInitialized) {
+            mRadialGradient = RadialGradient()
+        }
 
-    /**
-     *
-     */
-    fun radialGradientOval(bitBeautyBitmap: BitBeautyBitmap, left: Float, top: Float, right:Float, bottom:Float,
-                 dither:Boolean, @ColorInt colorArray: IntArray, stepArray: FloatArray?, mode: Gradient.Mode) {
-        RadialGradient.getInstance().drawOval(bitBeautyBitmap, left, top, right, bottom, dither, colorArray, stepArray, mode)
-    }
-
-    /**
-     *
-     */
-    fun linearGradientRect(bitBeautyBitmap: BitBeautyBitmap, startX:Float, startY:Float, endX:Float, endY:Float,
-                           @ColorInt colorArray: IntArray, stepArray: FloatArray?, mode:Gradient.Mode) {
-
-        LinearGradient.getInstance().drawRect(bitBeautyBitmap, startX, startY, endX, endY, colorArray, stepArray, mode)
-    }
-
-    /**
-     *
-     */
-    fun linearGradientRect(bitBeautyBitmap: BitBeautyBitmap, rectStartX:Float, rectStartY:Float, rectEndX:Float, rectEndY:Float,
-                       gradStartX:Float, gradStartY:Float, gradEndX:Float, gradEndY:Float,
-                       @ColorInt colorArray: IntArray, stepArray: FloatArray?, mode:Gradient.Mode) {
-        LinearGradient.getInstance().drawRect(bitBeautyBitmap, rectStartX, rectStartY, rectEndX, rectEndY,
-                gradStartX, gradStartY, gradEndX, gradEndY, colorArray, stepArray, mode)
+        return mRadialGradient
     }
 
     companion object {
@@ -137,4 +106,7 @@ class BitBeauty {
     private constructor() {
         mInstance = this
     }
+
+    private lateinit var mLinearGradient: LinearGradient
+    private lateinit var mRadialGradient: RadialGradient
 }
