@@ -9,7 +9,14 @@ import android.graphics.RadialGradient as AndroidRadialGradient
 /**
  * Created by soumya on 3/25/18.
  */
-class RadialGradient {
+class RadialGradient private constructor() {
+
+    internal companion object {
+        private val mInstance: RadialGradient = RadialGradient()
+        internal fun getInstance(): RadialGradient {
+            return mInstance
+        }
+    }
 
     @Synchronized
     fun drawCircle(bitBeautyBitmap: BitBeautyBitmap, centerX: Float, centerY: Float, radius: Float,

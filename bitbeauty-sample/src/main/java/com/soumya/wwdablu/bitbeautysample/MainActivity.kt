@@ -8,8 +8,6 @@ import android.widget.ImageView
 import com.soumya.wwdablu.bitbeauty.BitBeauty
 import com.soumya.wwdablu.bitbeauty.BitBeautyBitmap
 import com.soumya.wwdablu.bitbeauty.modules.gradient.Gradient
-import com.soumya.wwdablu.bitbeauty.modules.gradient.LinearGradient
-import com.soumya.wwdablu.bitbeauty.modules.gradient.RadialGradient
 import com.soumya.wwdablu.bitbeauty.modules.writer.BitmapWriter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.observers.DisposableObserver
@@ -29,19 +27,20 @@ class MainActivity : AppCompatActivity() {
 
     fun simpleColorBitmap() {
 
-        val bmp = BitBeauty.getInstance().createBitmapRGB(this, 200, 200, Color.RED)
+        val bmp = BitBeauty.Creator.createBitmapRGB(this, 200, 200, Color.RED)
         findViewById<ImageView>(R.id.iv_image).setImageBitmap((bmp!!.getBitmap()))
     }
 
     fun linearAndRadialGradient() : BitBeautyBitmap {
 
-        val bmp = BitBeauty.getInstance().createBitmapRGB(this, 200, 200, Color.WHITE)
+        val bmp = BitBeauty.Creator.createBitmapRGB(this, 200, 200, Color.WHITE)
 
         val ca = IntArray(3)
         ca[0] = Color.CYAN
         ca[1] = Color.YELLOW
         ca[2] = Color.MAGENTA
-        LinearGradient().drawRect(bmp!!, 0F, 0F, 200F, 200F, 0F, 100F, 200F, 100F, ca, null, Gradient.Mode.CLAMP)
+
+        BitBeauty.LinearGradient.drawRect(bmp!!, 0F, 0F, 200F, 200F, 0F, 100F, 200F, 100F, ca, null, Gradient.Mode.CLAMP)
 
         val d = IntArray(3)
         d[0] = Color.RED
@@ -53,7 +52,7 @@ class MainActivity : AppCompatActivity() {
         f[1] = 0.33f
         f[2] = 0.66f
 
-        RadialGradient().drawCircle(bmp, 100F, 100F, 50F, false, d, null, Gradient.Mode.MIRROR)
+        BitBeauty.RadialGradient.drawCircle(bmp, 100F, 100F, 50F, false, d, null, Gradient.Mode.MIRROR)
 
         findViewById<ImageView>(R.id.iv_image).setImageBitmap((bmp.getBitmap()))
 
@@ -64,7 +63,8 @@ class MainActivity : AppCompatActivity() {
 
         val file = File(this.filesDir, "gradient.jpg")
         Log.e("TAG", file.path)
-        BitmapWriter().write(bmp, file, BitmapWriter.Format.JPEG, 100)
+
+        BitBeauty.BitmapWriter.write(bmp, file, BitmapWriter.Format.JPEG, 100)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeWith(object : DisposableObserver<File>() {

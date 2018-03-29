@@ -1,4 +1,4 @@
-package com.soumya.wwdablu.bitbeauty.modules
+package com.soumya.wwdablu.bitbeauty.modules.creator
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -16,7 +16,12 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 /**
  * Created by soumya on 3/24/18.
  */
-internal class Creator {
+class Creator private constructor() {
+
+    enum class ArgbFormat {
+        ARG_4444,
+        ARGB_8888
+    }
 
     @Synchronized
     fun createBitmapRGB(context: Context, width:Int, height:Int, @ColorInt color:Int) : BitBeautyBitmap? {

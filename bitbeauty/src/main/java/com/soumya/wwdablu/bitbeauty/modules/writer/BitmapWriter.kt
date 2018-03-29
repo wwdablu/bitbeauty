@@ -12,12 +12,19 @@ import java.io.FileOutputStream
 /**
  * Created by soumya on 3/26/18.
  */
-class BitmapWriter {
+class BitmapWriter private constructor() {
 
     enum class Format {
         PNG,
         JPEG,
         WEBP
+    }
+
+    internal companion object {
+        private val mInstance: BitmapWriter = BitmapWriter()
+        fun getInstance(): BitmapWriter {
+            return mInstance
+        }
     }
 
     fun write(bitBeautyBitmap: BitBeautyBitmap, bitmapFile:File, format:Format, quality:Int) : Observable<File> {
