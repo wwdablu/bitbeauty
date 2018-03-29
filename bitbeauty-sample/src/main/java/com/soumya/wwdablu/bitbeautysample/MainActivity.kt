@@ -1,6 +1,6 @@
 package com.soumya.wwdablu.bitbeautysample
 
-import android.graphics.Color
+import android.graphics.*
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
@@ -21,7 +21,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         //simpleColorBitmap()
-        val bmp = linearAndRadialGradient()
+        //val bmp = linearAndRadialGradient()
+        imageBitmap()
         //writeBitmap(bmp)
     }
 
@@ -29,6 +30,29 @@ class MainActivity : AppCompatActivity() {
 
         val bmp = BitBeauty.Creator.createBitmapRGB(this, 200, 200, Color.RED)
         findViewById<ImageView>(R.id.iv_image).setImageBitmap((bmp!!.getBitmap()))
+    }
+
+    fun imageBitmap() {
+
+        BitBeauty.Creator.createBitmap(this, R.drawable.sunflower)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeWith(object : DisposableObserver<BitBeautyBitmap>() {
+                override fun onComplete() {
+                    //
+                }
+
+                override fun onNext(t: BitBeautyBitmap) {
+                    //BitBeauty.Effects.toSepia(t)
+                    //BitBeauty.Effects.toGrayScale(t)
+                    BitBeauty.Effects.invert(t)
+                    findViewById<ImageView>(R.id.iv_image).setImageBitmap((t!!.getBitmap()))
+                }
+
+                override fun onError(e: Throwable) {
+                    //
+                }
+            })
     }
 
     fun linearAndRadialGradient() : BitBeautyBitmap {

@@ -1,5 +1,6 @@
 package com.soumya.wwdablu.bitbeauty
 
+import com.soumya.wwdablu.bitbeauty.modules.Effects
 import com.soumya.wwdablu.bitbeauty.modules.creator.Creator
 import com.soumya.wwdablu.bitbeauty.modules.gradient.LinearGradient
 import com.soumya.wwdablu.bitbeauty.modules.gradient.RadialGradient
@@ -29,6 +30,9 @@ class BitBeauty private constructor() {
          */
         val RadialGradient: RadialGradient
         get() = com.soumya.wwdablu.bitbeauty.modules.gradient.RadialGradient.getInstance()
+
+        val Effects: Effects
+        get() = com.soumya.wwdablu.bitbeauty.modules.Effects.getInstance()
 
         /**
          * Returns a write object which can be used write the bitmap into a file

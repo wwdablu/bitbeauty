@@ -8,8 +8,8 @@
     tools:context="com.soumya.wwdablu.bitbeautysample.MainActivity">
 
     <ImageView
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="600dp"
+        android:layout_height="300dp"
         android:id="@+id/iv_image"
         android:layout_gravity="center" />
 

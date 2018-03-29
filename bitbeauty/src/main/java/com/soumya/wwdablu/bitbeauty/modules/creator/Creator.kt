@@ -3,6 +3,7 @@ package com.soumya.wwdablu.bitbeauty.modules.creator
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Paint
 import android.support.annotation.ColorInt
 import android.support.annotation.DrawableRes
 import com.bumptech.glide.Glide
@@ -33,7 +34,7 @@ class Creator private constructor() {
         canvas?.setBitmap(bmp)
         canvas?.drawColor(color)
 
-        return BitBeautyBitmap(bmp)
+        return BitBeautyBitmap(bmp, Bitmap.Config.RGB_565)
     }
 
     @Synchronized
@@ -46,7 +47,7 @@ class Creator private constructor() {
         canvas?.setBitmap(bmp)
         canvas?.drawColor(color)
 
-        return BitBeautyBitmap(bmp)
+        return BitBeautyBitmap(bmp, config)
     }
 
     fun createBitmap(context: Context, @DrawableRes image:Int) : Observable<BitBeautyBitmap> {
@@ -55,12 +56,25 @@ class Creator private constructor() {
             val simpleTarget = object : SimpleTarget<Bitmap>() {
                 override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
 
-                    val bitBeautyBitmap = BitBeautyBitmap(resource)
+                    val bitBeautyBitmap = BitBeautyBitmap(resource, Bitmap.Config.ARGB_8888)
                     emitter.onNext(bitBeautyBitmap)
                 }
             }
             Glide.with(context).asBitmap().load(image).into(simpleTarget)
         }).subscribeOn(AndroidSchedulers.mainThread())
+    }
+
+    @Synchronized
+    fun clone(context: Context, bitBeautyBitmap: BitBeautyBitmap): BitBeautyBitmap {
+
+        val bmp:Bitmap = Glide.get(context).bitmapPool.get(bitBeautyBitmap.getBitmap()?.width ?: 0,
+                bitBeautyBitmap.getBitmap()?.height ?: 0, bitBeautyBitmap.getBitmapConfig())
+
+        val canvas = Canvas(bmp)
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+        canvas.drawBitmap(bitBeautyBitmap.getBitmap(), 0F, 0F, paint)
+
+        return BitBeautyBitmap(bmp, bitBeautyBitmap.getBitmapConfig())
     }
 
     @Synchronized
