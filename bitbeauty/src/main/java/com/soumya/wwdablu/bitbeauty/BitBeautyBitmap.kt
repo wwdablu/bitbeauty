@@ -6,9 +6,11 @@ import android.graphics.Bitmap
  * Created by soumya on 3/23/18.
  */
 
-class BitBeautyBitmap internal constructor(bitmap: Bitmap) {
+class BitBeautyBitmap internal constructor(bitmap: Bitmap, config: Bitmap.Config) {
 
-    private var mBitmap:Bitmap = bitmap
+    private val mBitmap:Bitmap = bitmap
+    private val mBitmapConfig = config
+
     private var mCanRecycleBitmap = false
     private var mBitmapId:String = ""
 
@@ -44,5 +46,9 @@ class BitBeautyBitmap internal constructor(bitmap: Bitmap) {
 
     internal fun canRecycle(boolean: Boolean) {
         mCanRecycleBitmap = boolean
+    }
+
+    internal fun getBitmapConfig(): Bitmap.Config {
+        return mBitmapConfig
     }
 }
