@@ -45,8 +45,14 @@ class MainActivity : AppCompatActivity() {
                 override fun onNext(t: BitBeautyBitmap) {
                     //BitBeauty.Effects.toSepia(t)
                     //BitBeauty.Effects.toGrayScale(t)
-                    BitBeauty.Effects.invert(t)
-                    findViewById<ImageView>(R.id.iv_image).setImageBitmap((t!!.getBitmap()))
+                    //BitBeauty.Effects.invert(t)
+
+                    val cropRect = Rect((t.getBitmap()!!.width/2), (t.getBitmap()!!.height/2), (t.getBitmap()!!.width/2) + 400, (t.getBitmap()!!.height/2) + 400)
+                    //val cropped = BitBeauty.Creator.crop(applicationContext, t, cropRect)
+                    val cropped = BitBeauty.Editor.crop(applicationContext, t, PointF(0F, 0F), 150F)
+
+                    //findViewById<ImageView>(R.id.iv_image).setImageBitmap((t!!.getBitmap()))
+                    findViewById<ImageView>(R.id.iv_image).setImageBitmap((cropped!!.getBitmap()))
                 }
 
                 override fun onError(e: Throwable) {

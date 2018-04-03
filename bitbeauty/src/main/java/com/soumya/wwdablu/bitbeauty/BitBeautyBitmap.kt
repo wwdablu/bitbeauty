@@ -19,7 +19,7 @@ class BitBeautyBitmap internal constructor(bitmap: Bitmap, config: Bitmap.Config
      * @return Bitmap? The actual bitmap or null
      */
     fun getBitmap() : Bitmap? {
-        return if (mBitmap.isRecycled) null else mBitmap
+        return mBitmap
     }
 
     fun getIdentifier() : String {
