@@ -1,4 +1,4 @@
-package com.soumya.wwdablu.bitbeauty.modules
+package com.soumya.wwdablu.bitbeauty.modules.effects
 
 import android.graphics.*
 import com.soumya.wwdablu.bitbeauty.BitBeautyBitmap
@@ -6,13 +6,13 @@ import com.soumya.wwdablu.bitbeauty.BitBeautyBitmap
 class Effects {
 
     @Synchronized
-    fun toGrayScale(bitBeautyBitmap: BitBeautyBitmap) {
+    fun grayscale(bitBeautyBitmap: BitBeautyBitmap) {
 
-        toGrayScale(bitBeautyBitmap, Rect(0, 0, bitBeautyBitmap.getBitmap()?.width ?: 0,
+        grayscale(bitBeautyBitmap, Rect(0, 0, bitBeautyBitmap.getBitmap()?.width ?: 0,
                 bitBeautyBitmap.getBitmap()?.height ?: 0))
     }
 
-    fun toGrayScale(bitBeautyBitmap: BitBeautyBitmap, applyRect: Rect) {
+    fun grayscale(bitBeautyBitmap: BitBeautyBitmap, applyRect: Rect) {
 
         val canvas = Canvas(bitBeautyBitmap.getBitmap())
         val paint = Paint(Paint.ANTI_ALIAS_FLAG)
@@ -24,13 +24,13 @@ class Effects {
         canvas.drawBitmap(bitBeautyBitmap.getBitmap(), applyRect, applyRect, paint)
     }
 
-    fun toSepia(bitBeautyBitmap: BitBeautyBitmap) {
+    fun sepia(bitBeautyBitmap: BitBeautyBitmap) {
 
-        toSepia(bitBeautyBitmap, Rect(0, 0, bitBeautyBitmap.getBitmap()?.width ?: 0,
+        sepia(bitBeautyBitmap, Rect(0, 0, bitBeautyBitmap.getBitmap()?.width ?: 0,
                 bitBeautyBitmap.getBitmap()?.height ?: 0))
     }
 
-    fun toSepia(bitBeautyBitmap: BitBeautyBitmap, applyRect: Rect) {
+    fun sepia(bitBeautyBitmap: BitBeautyBitmap, applyRect: Rect) {
 
         val canvas = Canvas(bitBeautyBitmap.getBitmap())
         val paint = Paint(Paint.ANTI_ALIAS_FLAG)

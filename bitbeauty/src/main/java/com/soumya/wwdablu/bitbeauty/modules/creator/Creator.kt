@@ -3,7 +3,6 @@ package com.soumya.wwdablu.bitbeauty.modules.creator
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.Paint
 import android.support.annotation.ColorInt
 import android.support.annotation.DrawableRes
 import com.bumptech.glide.Glide
@@ -18,11 +17,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
  * Created by soumya on 3/24/18.
  */
 class Creator private constructor() {
-
-    enum class ArgbFormat {
-        ARG_4444,
-        ARGB_8888
-    }
 
     @Synchronized
     fun createBitmapRGB(context: Context, width:Int, height:Int, @ColorInt color:Int) : BitBeautyBitmap? {
@@ -62,29 +56,6 @@ class Creator private constructor() {
             }
             Glide.with(context).asBitmap().load(image).into(simpleTarget)
         }).subscribeOn(AndroidSchedulers.mainThread())
-    }
-
-    @Synchronized
-    fun clone(context: Context, bitBeautyBitmap: BitBeautyBitmap): BitBeautyBitmap {
-
-        val bmp:Bitmap = Glide.get(context).bitmapPool.get(bitBeautyBitmap.getBitmap()?.width ?: 0,
-                bitBeautyBitmap.getBitmap()?.height ?: 0, bitBeautyBitmap.getBitmapConfig())
-
-        val canvas = Canvas(bmp)
-        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
-        canvas.drawBitmap(bitBeautyBitmap.getBitmap(), 0F, 0F, paint)
-
-        return BitBeautyBitmap(bmp, bitBeautyBitmap.getBitmapConfig())
-    }
-
-    @Synchronized
-    fun erase(bitBeautyBitmap: BitBeautyBitmap, @ColorInt withColor:Int) {
-
-        if(bitBeautyBitmap.getBitmap() == null) {
-            return
-        }
-
-        Canvas(bitBeautyBitmap.getBitmap()).drawColor(withColor)
     }
 
     internal companion object {
