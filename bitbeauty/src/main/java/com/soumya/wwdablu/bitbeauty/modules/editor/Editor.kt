@@ -45,7 +45,10 @@ class Editor {
         canvas.drawCircle(radius, radius, radius, paint)
 
         paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
-        canvas.drawBitmap(bitBeautyBitmap.getBitmap(), point.x, point.y, paint)
+
+        val srcRect = Rect((point.x - radius).toInt(), (point.y - radius).toInt(), (point.x + radius).toInt(), (point.y + radius).toInt())
+        val dstRect = Rect(0, 0, (radius * 2).toInt(), (radius * 2).toInt())
+        canvas.drawBitmap(bitBeautyBitmap.getBitmap(), srcRect, dstRect, paint)
 
         return BitBeautyBitmap(croppedBitmap, bitBeautyBitmap.getBitmapConfig())
     }
@@ -71,6 +74,30 @@ class Editor {
         }
 
         Canvas(bitBeautyBitmap.getBitmap()).drawColor(withColor)
+    }
+
+    fun combine(srcBitBeautyBitmap: BitBeautyBitmap, dstBitBeautyBitmap: BitBeautyBitmap): BitBeautyBitmap {
+
+        val srcWidth = srcBitBeautyBitmap.getBitmap()?.width ?: -1
+        val srcHeight = srcBitBeautyBitmap.getBitmap()?.height ?: -1
+
+        val dstWidth = dstBitBeautyBitmap.getBitmap()?.width ?: -1
+        val dstHeight = dstBitBeautyBitmap.getBitmap()?.height ?: -1
+
+        //If source overlaps destination, then return source
+        if(srcWidth >= dstWidth && srcHeight >= dstHeight) {
+            return srcBitBeautyBitmap
+        }
+
+        val startX = dstWidth - srcWidth
+        val startY = dstHeight - srcHeight
+
+        val canvas = Canvas(dstBitBeautyBitmap.getBitmap())
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+        canvas.drawBitmap(srcBitBeautyBitmap.getBitmap(), if(startX == 0) startX.toFloat() else (startX/2).toFloat(),
+                if(startY == 0) startY.toFloat() else (startY/2).toFloat(), paint)
+
+        return dstBitBeautyBitmap
     }
 
     internal companion object {
