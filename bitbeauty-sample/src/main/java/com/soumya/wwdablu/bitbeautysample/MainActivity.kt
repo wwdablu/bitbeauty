@@ -50,9 +50,12 @@ class MainActivity : AppCompatActivity() {
                 override fun onNext(t: BitBeautyBitmap) {
 
                     val cropped = BitBeauty.Editor.crop(applicationContext, t, PointF(380F, 150F), 150F)
+                    val rotate = BitBeauty.Editor.rotate(applicationContext, cropped!!, -45F)
                     //BitBeauty.Effects.sepia(cropped!!)
-                    //BitBeauty.Effects.grayscale(cropped!!)
-                    findViewById<ImageView>(R.id.iv_image).setImageBitmap((cropped!!.getBitmap()))
+                    //BitBeauty.Effects.grayscale(rotate!!)
+                    //BitBeauty.Effects.polaroid(rotate!!)
+                    BitBeauty.Effects.blankAndWhite(rotate!!)
+                    findViewById<ImageView>(R.id.iv_image).setImageBitmap((rotate!!.getBitmap()))
                 }
 
                 override fun onError(e: Throwable) {
