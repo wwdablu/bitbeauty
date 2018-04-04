@@ -3,6 +3,7 @@ package com.soumya.wwdablu.bitbeauty.modules.creator
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Paint
 import android.support.annotation.ColorInt
 import android.support.annotation.DrawableRes
 import com.bumptech.glide.Glide
@@ -19,12 +20,10 @@ import io.reactivex.android.schedulers.AndroidSchedulers
  */
 class Creator private constructor() {
 
-    @Synchronized
     fun createBitmap(context: Context, width:Int, height:Int, @ColorInt color:Int) : BitBeautyBitmap? {
         return createBitmap(context, width, height, color, Bitmap.Config.ARGB_8888)
     }
 
-    @Synchronized
     fun createBitmap(context: Context, width: Int, height: Int, @ColorInt color: Int, config:Bitmap.Config) : BitBeautyBitmap? {
 
         val bmp:Bitmap = Glide.get(context).bitmapPool.get(width, height, config)
@@ -35,6 +34,16 @@ class Creator private constructor() {
         canvas?.drawColor(color)
 
         return BitBeautyBitmap(bmp, config)
+    }
+
+    fun createBitmapFromBitmap(context: Context, bitmap: Bitmap): BitBeautyBitmap? {
+
+        val newBitmap = Glide.get(context).bitmapPool.get(bitmap.width, bitmap.height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(newBitmap)
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+        canvas.drawBitmap(bitmap, 0F, 0F, paint)
+
+        return BitBeautyBitmap(newBitmap, Bitmap.Config.ARGB_8888)
     }
 
     fun createBitmapFromDrawable(context: Context, @DrawableRes image:Int) : Observable<BitBeautyBitmap> {

@@ -54,7 +54,9 @@ class MainActivity : AppCompatActivity() {
                     //BitBeauty.Effects.sepia(cropped!!)
                     //BitBeauty.Effects.grayscale(rotate!!)
                     //BitBeauty.Effects.polaroid(rotate!!)
-                    BitBeauty.Effects.blankAndWhite(rotate!!)
+                    //BitBeauty.Effects.blankAndWhite(rotate!!)
+                    //BitBeauty.Shapes.drawCircle(rotate!!, Color.parseColor("#88000000"), 150F, Point(212, 212))
+                    BitBeauty.Shapes.drawOval(rotate!!, Color.BLACK, RectF(50F, 100F, 150F, 120F))
                     findViewById<ImageView>(R.id.iv_image).setImageBitmap((rotate!!.getBitmap()))
                 }
 
