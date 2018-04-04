@@ -49,10 +49,6 @@ class Effects {
     }
 
     fun invert(bitBeautyBitmap: BitBeautyBitmap, applyRect: Rect) {
-
-        val canvas = Canvas(bitBeautyBitmap.getBitmap())
-        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
-
         val invertMatrix: FloatArray = floatArrayOf(
                 -1F, 0F, 0F, 0F, 255F,
                 0F, -1F, 0F, 0F, 255F,
@@ -61,7 +57,49 @@ class Effects {
         )
 
         val colorMatrix = ColorMatrix(invertMatrix)
+        applyCustomEffect(bitBeautyBitmap, colorMatrix, applyRect)
+    }
 
+    fun polaroid(bitBeautyBitmap: BitBeautyBitmap) {
+        polaroid(bitBeautyBitmap, Rect(0, 0, bitBeautyBitmap.getBitmap()?.width ?: 0,
+                bitBeautyBitmap.getBitmap()?.height ?: 0))
+    }
+
+    fun polaroid(bitBeautyBitmap: BitBeautyBitmap, applyRect: Rect) {
+
+        val invertMatrix: FloatArray = floatArrayOf(
+                1.438F, -0.062F, -0.062F, 0F, 0F,
+                -0.122F, 1.378F, -0.122F, 0F, 0F,
+                -0.016F, -0.016F, 1.483F, 0F, 0F,
+                0F, 0F, 0F, 1F, 0F
+        )
+
+        val colorMatrix = ColorMatrix(invertMatrix)
+        applyCustomEffect(bitBeautyBitmap, colorMatrix, applyRect)
+    }
+
+    fun blankAndWhite(bitBeautyBitmap: BitBeautyBitmap) {
+        blankAndWhite(bitBeautyBitmap, Rect(0, 0, bitBeautyBitmap.getBitmap()?.width ?: 0,
+                bitBeautyBitmap.getBitmap()?.height ?: 0))
+    }
+
+    fun blankAndWhite(bitBeautyBitmap: BitBeautyBitmap, applyRect: Rect) {
+
+        val invertMatrix: FloatArray = floatArrayOf(
+                0.5F, 0.5F, 0.5F, 0F, 0F,
+                0.5F, 0.5F, 0.5F, 0F, 0F,
+                0.5F, 0.5F, 0.5F, 0F, 0F,
+                0F, 0F, 0F, 1F, 0F
+        )
+
+        val colorMatrix = ColorMatrix(invertMatrix)
+        applyCustomEffect(bitBeautyBitmap, colorMatrix, applyRect)
+    }
+
+    fun applyCustomEffect(bitBeautyBitmap: BitBeautyBitmap, colorMatrix: ColorMatrix, applyRect: Rect) {
+
+        val canvas = Canvas(bitBeautyBitmap.getBitmap())
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
         paint.colorFilter = ColorMatrixColorFilter(colorMatrix)
         canvas.drawBitmap(bitBeautyBitmap.getBitmap(), applyRect, applyRect, paint)
     }

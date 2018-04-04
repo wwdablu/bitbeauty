@@ -8,7 +8,6 @@ import com.soumya.wwdablu.bitbeauty.BitBeautyBitmap
 
 class Editor {
 
-    @Synchronized
     fun crop(context: Context, bitBeautyBitmap: BitBeautyBitmap, cropRect: Rect): BitBeautyBitmap? {
 
         val w = bitBeautyBitmap.getBitmap()?.width ?: -1
@@ -45,12 +44,14 @@ class Editor {
         canvas.drawCircle(radius, radius, radius, paint)
 
         paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
-        canvas.drawBitmap(bitBeautyBitmap.getBitmap(), point.x, point.y, paint)
+
+        val srcRect = Rect((point.x - radius).toInt(), (point.y - radius).toInt(), (point.x + radius).toInt(), (point.y + radius).toInt())
+        val dstRect = Rect(0, 0, (radius * 2).toInt(), (radius * 2).toInt())
+        canvas.drawBitmap(bitBeautyBitmap.getBitmap(), srcRect, dstRect, paint)
 
         return BitBeautyBitmap(croppedBitmap, bitBeautyBitmap.getBitmapConfig())
     }
 
-    @Synchronized
     fun clone(context: Context, bitBeautyBitmap: BitBeautyBitmap): BitBeautyBitmap? {
 
         val bmp: Bitmap = Glide.get(context).bitmapPool.get(bitBeautyBitmap.getBitmap()?.width ?: 0,
@@ -63,7 +64,6 @@ class Editor {
         return BitBeautyBitmap(bmp, bitBeautyBitmap.getBitmapConfig())
     }
 
-    @Synchronized
     fun erase(bitBeautyBitmap: BitBeautyBitmap, @ColorInt withColor:Int) {
 
         if(bitBeautyBitmap.getBitmap() == null) {
@@ -71,6 +71,54 @@ class Editor {
         }
 
         Canvas(bitBeautyBitmap.getBitmap()).drawColor(withColor)
+    }
+
+    fun combine(srcBitBeautyBitmap: BitBeautyBitmap, dstBitBeautyBitmap: BitBeautyBitmap): BitBeautyBitmap {
+
+        val srcWidth = srcBitBeautyBitmap.getBitmap()?.width ?: -1
+        val srcHeight = srcBitBeautyBitmap.getBitmap()?.height ?: -1
+
+        val dstWidth = dstBitBeautyBitmap.getBitmap()?.width ?: -1
+        val dstHeight = dstBitBeautyBitmap.getBitmap()?.height ?: -1
+
+        //If source overlaps destination, then return source
+        if(srcWidth >= dstWidth && srcHeight >= dstHeight) {
+            return srcBitBeautyBitmap
+        }
+
+        val startX = dstWidth - srcWidth
+        val startY = dstHeight - srcHeight
+
+        val canvas = Canvas(dstBitBeautyBitmap.getBitmap())
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+        canvas.drawBitmap(srcBitBeautyBitmap.getBitmap(), if(startX == 0) startX.toFloat() else (startX/2).toFloat(),
+                if(startY == 0) startY.toFloat() else (startY/2).toFloat(), paint)
+
+        return dstBitBeautyBitmap
+    }
+
+    fun rotate(context: Context, bitBeautyBitmap: BitBeautyBitmap, degree:Float): BitBeautyBitmap? {
+
+        val width = bitBeautyBitmap.getBitmap()?.width ?: -1
+        val height = bitBeautyBitmap.getBitmap()?.height ?: -1
+
+        if(width == -1 || height == -1) {
+            return bitBeautyBitmap
+        }
+
+        val matrix = Matrix()
+        matrix.postRotate(degree)
+
+        val rotateBitmap = Bitmap.createBitmap(bitBeautyBitmap.getBitmap(), 0, 0,
+                width, height, matrix, true)
+        val managedRotateBitmap = Glide.get(context).bitmapPool.get(rotateBitmap.width,
+                rotateBitmap.height, bitBeautyBitmap.getBitmapConfig())
+        val canvas = Canvas(managedRotateBitmap)
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+        canvas.drawBitmap(rotateBitmap, 0F, 0F, paint)
+        rotateBitmap.recycle()
+
+        return BitBeautyBitmap(managedRotateBitmap, bitBeautyBitmap.getBitmapConfig())
     }
 
     internal companion object {

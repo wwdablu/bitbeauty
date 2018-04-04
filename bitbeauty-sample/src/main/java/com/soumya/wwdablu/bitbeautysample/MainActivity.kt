@@ -1,9 +1,11 @@
 package com.soumya.wwdablu.bitbeautysample
 
 import android.graphics.*
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.widget.FrameLayout
 import android.widget.ImageView
 import com.soumya.wwdablu.bitbeauty.BitBeauty
 import com.soumya.wwdablu.bitbeauty.BitBeautyBitmap
@@ -22,19 +24,49 @@ class MainActivity : AppCompatActivity() {
 
         //simpleColorBitmap()
         //val bmp = linearAndRadialGradient()
-        imageBitmap()
+        //imageBitmap()
+        imageBitmapFromUrl()
         //writeBitmap(bmp)
     }
 
     fun simpleColorBitmap() {
 
-        val bmp = BitBeauty.Creator.createBitmapRGB(this, 200, 200, Color.RED)
+        val bmp = BitBeauty.Creator.createBitmap(this, 200, 200, Color.RED)
         findViewById<ImageView>(R.id.iv_image).setImageBitmap((bmp!!.getBitmap()))
+    }
+
+    fun imageBitmapFromUrl() {
+
+        val url = "http://www.cameraegg.org/wp-content/uploads/2015/06/canon-powershot-g3-x-sample-images-1-620x413.jpg"
+
+        BitBeauty.Creator.createBitmapFromUrl(this, url)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeWith(object: DisposableObserver<BitBeautyBitmap>() {
+                override fun onComplete() {
+                    //
+                }
+
+                override fun onNext(t: BitBeautyBitmap) {
+
+                    val cropped = BitBeauty.Editor.crop(applicationContext, t, PointF(380F, 150F), 150F)
+                    val rotate = BitBeauty.Editor.rotate(applicationContext, cropped!!, -45F)
+                    //BitBeauty.Effects.sepia(cropped!!)
+                    //BitBeauty.Effects.grayscale(rotate!!)
+                    //BitBeauty.Effects.polaroid(rotate!!)
+                    BitBeauty.Effects.blankAndWhite(rotate!!)
+                    findViewById<ImageView>(R.id.iv_image).setImageBitmap((rotate!!.getBitmap()))
+                }
+
+                override fun onError(e: Throwable) {
+                    //
+                }
+            })
     }
 
     fun imageBitmap() {
 
-        BitBeauty.Creator.createBitmap(this, R.drawable.sunflower)
+        BitBeauty.Creator.createBitmapFromDrawable(this, R.drawable.sunflower)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeWith(object : DisposableObserver<BitBeautyBitmap>() {
@@ -63,7 +95,7 @@ class MainActivity : AppCompatActivity() {
 
     fun linearAndRadialGradient() : BitBeautyBitmap {
 
-        val bmp = BitBeauty.Creator.createBitmapRGB(this, 200, 200, Color.WHITE)
+        val bmp = BitBeauty.Creator.createBitmap(this, 200, 200, Color.WHITE)
 
         val ca = IntArray(3)
         ca[0] = Color.CYAN

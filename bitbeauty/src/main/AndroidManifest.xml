@@ -1,2 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.soumya.wwdablu.bitbeauty" />
+    package="com.soumya.wwdablu.bitbeauty">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+</manifest>
