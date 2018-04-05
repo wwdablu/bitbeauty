@@ -38,7 +38,8 @@ class BitmapWriter private constructor() {
                 BitmapWriter.Format.WEBP -> Bitmap.CompressFormat.WEBP
             }
 
-            bitBeautyBitmap.getBitmap()!!.compress(compressFormat, if (quality <= 0) 1 else quality, bitmapOutputStream)
+            bitBeautyBitmap.getBitmap()!!.compress(compressFormat,
+                    if(1 >= quality) 1 else if (100 <= quality) 100 else quality, bitmapOutputStream)
             bitmapOutputStream.close()
 
             emitter.onNext(bitmapFile)

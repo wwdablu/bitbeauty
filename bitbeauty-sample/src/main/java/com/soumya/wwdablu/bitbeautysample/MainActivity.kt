@@ -25,8 +25,57 @@ class MainActivity : AppCompatActivity() {
         //simpleColorBitmap()
         //val bmp = linearAndRadialGradient()
         //imageBitmap()
-        imageBitmapFromUrl()
+        //imageBitmapFromUrl()
+        drawShapes()
         //writeBitmap(bmp)
+    }
+
+    fun drawShapes() {
+
+        val bmp = BitBeauty.Creator.createBitmap(this, 400, 400, Color.TRANSPARENT, Bitmap.Config.ARGB_8888)
+                ?: return
+
+        //Back ------------------------
+        //Upper two dots
+        BitBeauty.Shapes.drawCircle(bmp, Color.BLACK, 15F, Point(120, 30))
+        BitBeauty.Shapes.drawCircle(bmp, Color.BLACK, 15F, Point(280, 30))
+
+        //Lower two dots
+        BitBeauty.Shapes.drawCircle(bmp, Color.BLACK, 15F, Point(120, 290))
+        BitBeauty.Shapes.drawCircle(bmp, Color.BLACK, 15F, Point(280, 290))
+
+        //Connect the dots horizontally
+        BitBeauty.Shapes.drawLine(bmp, Color.BLACK, 10F, PointF(120F, 30F), PointF(280F, 30F))
+        BitBeauty.Shapes.drawLine(bmp, Color.BLACK, 10F, PointF(120F, 290F), PointF(280F, 290F))
+
+        //Connect the dots vertically
+        BitBeauty.Shapes.drawLine(bmp, Color.BLACK, 10F, PointF(120F, 30F), PointF(120F, 290F))
+        BitBeauty.Shapes.drawLine(bmp, Color.BLACK, 10F, PointF(280F, 30F), PointF(280F, 290F))
+
+        //Front -----------------------
+        //Upper two dots
+        BitBeauty.Shapes.drawCircle(bmp, Color.BLACK, 15F, Point(200, 110))
+        BitBeauty.Shapes.drawCircle(bmp, Color.BLACK, 15F, Point(360, 110))
+
+        //Lower two dots
+        BitBeauty.Shapes.drawCircle(bmp, Color.BLACK, 15F, Point(200, 370))
+        BitBeauty.Shapes.drawCircle(bmp, Color.BLACK, 15F, Point(360, 370))
+
+        //Connect the dots horizontally
+        BitBeauty.Shapes.drawLine(bmp, Color.BLACK, 10F, PointF(200F, 110F), PointF(360F, 110F))
+        BitBeauty.Shapes.drawLine(bmp, Color.BLACK, 10F, PointF(200F, 370F), PointF(360F, 370F))
+
+        //Connect the dots vertically
+        BitBeauty.Shapes.drawLine(bmp, Color.BLACK, 10F, PointF(200F, 110F), PointF(200F, 370F))
+        BitBeauty.Shapes.drawLine(bmp, Color.BLACK, 10F, PointF(360F, 110F), PointF(360F, 370F))
+
+        //Connect the level dots
+        BitBeauty.Shapes.drawLine(bmp, Color.BLACK, 10F, PointF(120F, 30F), PointF(200F, 110F))
+        BitBeauty.Shapes.drawLine(bmp, Color.BLACK, 10F, PointF(280F, 30F), PointF(360F, 110F))
+        BitBeauty.Shapes.drawLine(bmp, Color.BLACK, 10F, PointF(120F, 290F), PointF(200F, 370F))
+        BitBeauty.Shapes.drawLine(bmp, Color.BLACK, 10F, PointF(280F, 290F), PointF(360F, 370F))
+
+        findViewById<ImageView>(R.id.iv_image).setImageBitmap((bmp.getBitmap()))
     }
 
     fun simpleColorBitmap() {
@@ -54,7 +103,21 @@ class MainActivity : AppCompatActivity() {
                     //BitBeauty.Effects.sepia(cropped!!)
                     //BitBeauty.Effects.grayscale(rotate!!)
                     //BitBeauty.Effects.polaroid(rotate!!)
-                    BitBeauty.Effects.blankAndWhite(rotate!!)
+                    //BitBeauty.Effects.blankAndWhite(rotate!!)
+                    //BitBeauty.Shapes.drawCircle(rotate!!, Color.parseColor("#88000000"), 150F, Point(212, 212))
+                    //BitBeauty.Shapes.drawOval(rotate!!, Color.BLACK, RectF(50F, 100F, 150F, 120F))
+                    //BitBeauty.Shapes.drawRect(rotate!!, Color.BLACK, RectF(50F, 100F, 150F, 120F))
+
+                    val path = Path()
+                    path.moveTo(100F, 100F)
+                    path.lineTo(100F, 100F)
+                    path.lineTo(100F, 200F)
+                    path.lineTo(200F, 300F)
+                    path.lineTo(200F, 100F)
+                    path.lineTo(100F, 100F)
+                    path.close()
+                    //BitBeauty.Shapes.freeform(rotate!!, Color.parseColor("#88FFFFFF"), path)
+
                     findViewById<ImageView>(R.id.iv_image).setImageBitmap((rotate!!.getBitmap()))
                 }
 

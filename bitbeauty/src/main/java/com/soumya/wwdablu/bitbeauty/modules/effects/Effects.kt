@@ -5,7 +5,6 @@ import com.soumya.wwdablu.bitbeauty.BitBeautyBitmap
 
 class Effects {
 
-    @Synchronized
     fun grayscale(bitBeautyBitmap: BitBeautyBitmap) {
 
         grayscale(bitBeautyBitmap, Rect(0, 0, bitBeautyBitmap.getBitmap()?.width ?: 0,
