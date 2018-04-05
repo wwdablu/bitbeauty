@@ -56,7 +56,19 @@ class MainActivity : AppCompatActivity() {
                     //BitBeauty.Effects.polaroid(rotate!!)
                     //BitBeauty.Effects.blankAndWhite(rotate!!)
                     //BitBeauty.Shapes.drawCircle(rotate!!, Color.parseColor("#88000000"), 150F, Point(212, 212))
-                    BitBeauty.Shapes.drawOval(rotate!!, Color.BLACK, RectF(50F, 100F, 150F, 120F))
+                    //BitBeauty.Shapes.drawOval(rotate!!, Color.BLACK, RectF(50F, 100F, 150F, 120F))
+                    //BitBeauty.Shapes.drawRect(rotate!!, Color.BLACK, RectF(50F, 100F, 150F, 120F))
+
+                    val path = Path()
+                    path.moveTo(100F, 100F)
+                    path.lineTo(100F, 100F)
+                    path.lineTo(100F, 200F)
+                    path.lineTo(200F, 300F)
+                    path.lineTo(200F, 100F)
+                    path.lineTo(100F, 100F)
+                    path.close()
+                    BitBeauty.Shapes.freeform(rotate!!, Color.parseColor("#88FFFFFF"), path)
+
                     findViewById<ImageView>(R.id.iv_image).setImageBitmap((rotate!!.getBitmap()))
                 }
 

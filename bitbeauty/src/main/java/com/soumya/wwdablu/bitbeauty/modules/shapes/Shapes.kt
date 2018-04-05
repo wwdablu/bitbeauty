@@ -26,6 +26,24 @@ class Shapes {
         canvas.drawOval(rect, paint)
     }
 
+    fun drawRect(bitBeautyBitmap: BitBeautyBitmap, @ColorInt colorInt: Int, rect: RectF) {
+
+        val canvas = Canvas(bitBeautyBitmap.getBitmap())
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+        paint.color = colorInt
+
+        canvas.drawRect(rect, paint)
+    }
+
+    fun freeform(bitBeautyBitmap: BitBeautyBitmap, @ColorInt colorInt: Int, path: Path) {
+
+        val canvas = Canvas(bitBeautyBitmap.getBitmap())
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+        paint.color = colorInt
+
+        canvas.drawPath(path, paint)
+    }
+
     internal companion object {
         private val mInstance: Shapes = Shapes()
         internal fun getInstance(): Shapes {
