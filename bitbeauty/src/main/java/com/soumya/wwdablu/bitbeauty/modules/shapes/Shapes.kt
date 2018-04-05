@@ -35,6 +35,16 @@ class Shapes {
         canvas.drawRect(rect, paint)
     }
 
+    fun drawLine(bitBeautyBitmap: BitBeautyBitmap, @ColorInt colorInt: Int, lineWidth: Float = 4F, start: PointF, end: PointF) {
+
+        val canvas = Canvas(bitBeautyBitmap.getBitmap())
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+        paint.color = colorInt
+        paint.strokeWidth = lineWidth
+
+        canvas.drawLine(start.x, start.y, end.x, end.y, paint)
+    }
+
     fun freeform(bitBeautyBitmap: BitBeautyBitmap, @ColorInt colorInt: Int, path: Path) {
 
         val canvas = Canvas(bitBeautyBitmap.getBitmap())
