@@ -1,16 +1,17 @@
 package com.soumya.wwdablu.bitbeautysample
 
-import android.graphics.*
-import android.graphics.drawable.BitmapDrawable
+import android.graphics.Color
+import android.graphics.Path
+import android.graphics.PointF
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import android.widget.FrameLayout
 import android.widget.ImageView
 import com.soumya.wwdablu.bitbeauty.BitBeauty
 import com.soumya.wwdablu.bitbeauty.BitBeautyBitmap
 import com.soumya.wwdablu.bitbeauty.modules.gradient.Gradient
 import com.soumya.wwdablu.bitbeauty.modules.writer.BitmapWriter
+import com.soumya.wwdablu.bitbeautysample.editors.MaskImage
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
@@ -22,61 +23,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //simpleColorBitmap()
-        //val bmp = linearAndRadialGradient()
-        //imageBitmap()
-        //imageBitmapFromUrl()
-        drawShapes()
-        //writeBitmap(bmp)
+        //----- Shapes -----
+        //LinkedCubes().drawJoinedCubes(this, findViewById(R.id.iv_image), false)
+        //Polygons().draw(this, findViewById(R.id.iv_image))
+
+        //----- Editor -----
+        MaskImage().maskImage(this, findViewById(R.id.iv_image))
     }
 
-    fun drawShapes() {
 
-        val bmp = BitBeauty.Creator.createBitmap(this, 400, 400, Color.TRANSPARENT, Bitmap.Config.ARGB_8888)
-                ?: return
-
-        //Back ------------------------
-        //Upper two dots
-        BitBeauty.Shapes.drawCircle(bmp, Color.BLACK, 15F, Point(120, 30))
-        BitBeauty.Shapes.drawCircle(bmp, Color.BLACK, 15F, Point(280, 30))
-
-        //Lower two dots
-        BitBeauty.Shapes.drawCircle(bmp, Color.BLACK, 15F, Point(120, 290))
-        BitBeauty.Shapes.drawCircle(bmp, Color.BLACK, 15F, Point(280, 290))
-
-        //Connect the dots horizontally
-        BitBeauty.Shapes.drawLine(bmp, Color.BLACK, 10F, PointF(120F, 30F), PointF(280F, 30F))
-        BitBeauty.Shapes.drawLine(bmp, Color.BLACK, 10F, PointF(120F, 290F), PointF(280F, 290F))
-
-        //Connect the dots vertically
-        BitBeauty.Shapes.drawLine(bmp, Color.BLACK, 10F, PointF(120F, 30F), PointF(120F, 290F))
-        BitBeauty.Shapes.drawLine(bmp, Color.BLACK, 10F, PointF(280F, 30F), PointF(280F, 290F))
-
-        //Front -----------------------
-        //Upper two dots
-        BitBeauty.Shapes.drawCircle(bmp, Color.BLACK, 15F, Point(200, 110))
-        BitBeauty.Shapes.drawCircle(bmp, Color.BLACK, 15F, Point(360, 110))
-
-        //Lower two dots
-        BitBeauty.Shapes.drawCircle(bmp, Color.BLACK, 15F, Point(200, 370))
-        BitBeauty.Shapes.drawCircle(bmp, Color.BLACK, 15F, Point(360, 370))
-
-        //Connect the dots horizontally
-        BitBeauty.Shapes.drawLine(bmp, Color.BLACK, 10F, PointF(200F, 110F), PointF(360F, 110F))
-        BitBeauty.Shapes.drawLine(bmp, Color.BLACK, 10F, PointF(200F, 370F), PointF(360F, 370F))
-
-        //Connect the dots vertically
-        BitBeauty.Shapes.drawLine(bmp, Color.BLACK, 10F, PointF(200F, 110F), PointF(200F, 370F))
-        BitBeauty.Shapes.drawLine(bmp, Color.BLACK, 10F, PointF(360F, 110F), PointF(360F, 370F))
-
-        //Connect the level dots
-        BitBeauty.Shapes.drawLine(bmp, Color.BLACK, 10F, PointF(120F, 30F), PointF(200F, 110F))
-        BitBeauty.Shapes.drawLine(bmp, Color.BLACK, 10F, PointF(280F, 30F), PointF(360F, 110F))
-        BitBeauty.Shapes.drawLine(bmp, Color.BLACK, 10F, PointF(120F, 290F), PointF(200F, 370F))
-        BitBeauty.Shapes.drawLine(bmp, Color.BLACK, 10F, PointF(280F, 290F), PointF(360F, 370F))
-
-        findViewById<ImageView>(R.id.iv_image).setImageBitmap((bmp.getBitmap()))
-    }
 
     fun simpleColorBitmap() {
 
@@ -119,35 +74,6 @@ class MainActivity : AppCompatActivity() {
                     //BitBeauty.Shapes.freeform(rotate!!, Color.parseColor("#88FFFFFF"), path)
 
                     findViewById<ImageView>(R.id.iv_image).setImageBitmap((rotate!!.getBitmap()))
-                }
-
-                override fun onError(e: Throwable) {
-                    //
-                }
-            })
-    }
-
-    fun imageBitmap() {
-
-        BitBeauty.Creator.createBitmapFromDrawable(this, R.drawable.sunflower)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeWith(object : DisposableObserver<BitBeautyBitmap>() {
-                override fun onComplete() {
-                    //
-                }
-
-                override fun onNext(t: BitBeautyBitmap) {
-                    //BitBeauty.Effects.toSepia(t)
-                    //BitBeauty.Effects.toGrayScale(t)
-                    //BitBeauty.Effects.invert(t)
-
-                    val cropRect = Rect((t.getBitmap()!!.width/2), (t.getBitmap()!!.height/2), (t.getBitmap()!!.width/2) + 400, (t.getBitmap()!!.height/2) + 400)
-                    //val cropped = BitBeauty.Creator.crop(applicationContext, t, cropRect)
-                    val cropped = BitBeauty.Editor.crop(applicationContext, t, PointF(0F, 0F), 150F)
-
-                    //findViewById<ImageView>(R.id.iv_image).setImageBitmap((t!!.getBitmap()))
-                    findViewById<ImageView>(R.id.iv_image).setImageBitmap((cropped!!.getBitmap()))
                 }
 
                 override fun onError(e: Throwable) {

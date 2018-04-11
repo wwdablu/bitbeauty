@@ -97,6 +97,15 @@ class Editor {
         return dstBitBeautyBitmap
     }
 
+    fun mask(srcBitBeautyBitmap: BitBeautyBitmap, dstBitBeautyBitmap: BitBeautyBitmap, mode: PorterDuff.Mode = PorterDuff.Mode.SRC_IN) {
+
+        val canvas = Canvas(dstBitBeautyBitmap.getBitmap())
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+        paint.xfermode = PorterDuffXfermode(mode)
+
+        canvas.drawBitmap(srcBitBeautyBitmap.getBitmap(), 0F, 0F, paint)
+    }
+
     fun rotate(context: Context, bitBeautyBitmap: BitBeautyBitmap, degree:Float): BitBeautyBitmap? {
 
         val width = bitBeautyBitmap.getBitmap()?.width ?: -1

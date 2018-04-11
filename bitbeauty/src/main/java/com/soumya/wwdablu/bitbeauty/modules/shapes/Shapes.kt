@@ -45,6 +45,23 @@ class Shapes {
         canvas.drawLine(start.x, start.y, end.x, end.y, paint)
     }
 
+    fun drawPolygon(bitBeautyBitmap: BitBeautyBitmap, @ColorInt colorInt: Int, x: Float, y: Float, radius: Float, sides: Int) {
+
+        val section = 2.0 * Math.PI / sides
+
+        val path = Path()
+        path.reset()
+        path.moveTo((x + radius * Math.cos(0.0)).toFloat(), (y + radius * Math.sin(0.0)).toFloat())
+
+        for (i in 1 until sides) {
+            path.lineTo((x + radius * Math.cos(section * i)).toFloat(),
+                (y + radius * Math.sin(section * i)).toFloat())
+        }
+
+        path.close()
+        freeform(bitBeautyBitmap, colorInt, path)
+    }
+
     fun freeform(bitBeautyBitmap: BitBeautyBitmap, @ColorInt colorInt: Int, path: Path) {
 
         val canvas = Canvas(bitBeautyBitmap.getBitmap())
