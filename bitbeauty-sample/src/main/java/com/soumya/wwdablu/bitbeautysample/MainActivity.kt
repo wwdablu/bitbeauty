@@ -28,7 +28,8 @@ class MainActivity : AppCompatActivity() {
         //Polygons().draw(this, findViewById(R.id.iv_image))
 
         //----- Editor -----
-        MaskImage().maskImage(this, findViewById(R.id.iv_image))
+        //MaskImage().maskImage(this, findViewById(R.id.iv_image))
+        MaskImage().animateReveal(this, findViewById(R.id.iv_image))
     }
 
 

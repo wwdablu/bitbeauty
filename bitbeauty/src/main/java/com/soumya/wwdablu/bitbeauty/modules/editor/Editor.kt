@@ -64,13 +64,16 @@ class Editor {
         return BitBeautyBitmap(bmp, bitBeautyBitmap.getBitmapConfig())
     }
 
+    fun copy(srcBitBeautyBitmap: BitBeautyBitmap, dstBitBeautyBitmap: BitBeautyBitmap) {
+
+        val canvas = Canvas(dstBitBeautyBitmap.getBitmap())
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+        erase(dstBitBeautyBitmap, Color.TRANSPARENT)
+        canvas.drawBitmap(srcBitBeautyBitmap.getBitmap(), 0F, 0F, paint)
+    }
+
     fun erase(bitBeautyBitmap: BitBeautyBitmap, @ColorInt withColor:Int) {
-
-        if(bitBeautyBitmap.getBitmap() == null) {
-            return
-        }
-
-        Canvas(bitBeautyBitmap.getBitmap()).drawColor(withColor)
+        (bitBeautyBitmap.getBitmap())?.eraseColor(withColor)
     }
 
     fun combine(srcBitBeautyBitmap: BitBeautyBitmap, dstBitBeautyBitmap: BitBeautyBitmap): BitBeautyBitmap {
