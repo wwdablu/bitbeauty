@@ -127,14 +127,10 @@ class Editor {
 
         val rotateBitmap = Bitmap.createBitmap(bitBeautyBitmap.getBitmap(), 0, 0,
                 width, height, matrix, true)
-        val managedRotateBitmap = Glide.get(context).bitmapPool.get(rotateBitmap.width,
-                rotateBitmap.height, bitBeautyBitmap.getBitmapConfig())
-        val canvas = Canvas(managedRotateBitmap)
-        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
-        canvas.drawBitmap(rotateBitmap, 0F, 0F, paint)
-        rotateBitmap.recycle()
 
-        return BitBeautyBitmap(managedRotateBitmap, bitBeautyBitmap.getBitmapConfig())
+        Glide.get(context).bitmapPool.put(rotateBitmap)
+
+        return BitBeautyBitmap(rotateBitmap, bitBeautyBitmap.getBitmapConfig())
     }
 
     internal companion object {
