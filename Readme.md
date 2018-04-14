@@ -44,4 +44,4 @@ Writer allows to save the bitmap generated onto a file.
 
 **Sample Screenshot**  
 Crop an image in circular format.  
-![Phone Portrait](https://github.com/wwdablu/bitbeauty/blob/master/screenshots/001.png)
+![Phone Portrait](https://github.com/wwdablu/bitbeauty/blob/master/screenshots/001.png = 250x520)
