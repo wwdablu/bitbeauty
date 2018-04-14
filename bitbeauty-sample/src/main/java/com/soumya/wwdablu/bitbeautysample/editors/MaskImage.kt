@@ -36,7 +36,7 @@ class MaskImage {
                     BitBeauty.Shapes.drawPolygon(hexagonBmp, Color.BLACK, ((hexagonBmp.getBitmap()?.width?.toFloat() ?: 0F) / 2F) - 50F,
                             ((hexagonBmp.getBitmap()?.height?.toFloat() ?: 0F) / 2F) - 50F, 150F, 6)
 
-                    BitBeauty.Editor.mask(t, hexagonBmp)
+                    BitBeauty.Editor.mask(t, hexagonBmp, Point(0,0))
                     imageView.setImageBitmap((hexagonBmp.getBitmap()))
                 }
 
@@ -91,7 +91,7 @@ class MaskImage {
                                 300, 300
                         ))
 
-                        BitBeauty.Editor.mask(bitBeautyBitmap, maskBitmap)
+                        BitBeauty.Editor.mask(bitBeautyBitmap, maskBitmap, Point(0,0))
                         BitBeauty.Editor.copy(maskBitmap, canvasBitmap)
 
                         imageView.setImageBitmap((canvasBitmap.getBitmap()))
@@ -101,7 +101,7 @@ class MaskImage {
                                 300, 300
                         ))
 
-                        BitBeauty.Editor.mask(bitBeautyBitmap, maskBitmap, PorterDuff.Mode.SRC_IN)
+                        BitBeauty.Editor.mask(bitBeautyBitmap, maskBitmap, Point(0,0), PorterDuff.Mode.SRC_IN)
                         BitBeauty.Editor.copy(maskBitmap, canvasBitmap)
                         imageView.setImageBitmap((canvasBitmap.getBitmap()))
                     }
