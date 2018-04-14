@@ -64,13 +64,16 @@ class Editor {
         return BitBeautyBitmap(bmp, bitBeautyBitmap.getBitmapConfig())
     }
 
+    fun copy(srcBitBeautyBitmap: BitBeautyBitmap, dstBitBeautyBitmap: BitBeautyBitmap) {
+
+        val canvas = Canvas(dstBitBeautyBitmap.getBitmap())
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+        erase(dstBitBeautyBitmap, Color.TRANSPARENT)
+        canvas.drawBitmap(srcBitBeautyBitmap.getBitmap(), 0F, 0F, paint)
+    }
+
     fun erase(bitBeautyBitmap: BitBeautyBitmap, @ColorInt withColor:Int) {
-
-        if(bitBeautyBitmap.getBitmap() == null) {
-            return
-        }
-
-        Canvas(bitBeautyBitmap.getBitmap()).drawColor(withColor)
+        (bitBeautyBitmap.getBitmap())?.eraseColor(withColor)
     }
 
     fun combine(srcBitBeautyBitmap: BitBeautyBitmap, dstBitBeautyBitmap: BitBeautyBitmap): BitBeautyBitmap {
@@ -97,13 +100,17 @@ class Editor {
         return dstBitBeautyBitmap
     }
 
-    fun mask(srcBitBeautyBitmap: BitBeautyBitmap, dstBitBeautyBitmap: BitBeautyBitmap, mode: PorterDuff.Mode = PorterDuff.Mode.SRC_IN) {
+    fun mask(srcBitBeautyBitmap: BitBeautyBitmap, dstBitBeautyBitmap: BitBeautyBitmap, rectPoint: Point, mode: PorterDuff.Mode = PorterDuff.Mode.SRC_IN) {
+
+        val width = dstBitBeautyBitmap.getBitmap()?.width ?: -1
+        val height = dstBitBeautyBitmap.getBitmap()?.height ?: -1
 
         val canvas = Canvas(dstBitBeautyBitmap.getBitmap())
         val paint = Paint(Paint.ANTI_ALIAS_FLAG)
         paint.xfermode = PorterDuffXfermode(mode)
 
-        canvas.drawBitmap(srcBitBeautyBitmap.getBitmap(), 0F, 0F, paint)
+        val rect = Rect(rectPoint.x, rectPoint.y, rectPoint.x + width, rectPoint.y + height)
+        canvas.drawBitmap(srcBitBeautyBitmap.getBitmap(), rect, Rect(0, 0, width, height), paint)
     }
 
     fun rotate(context: Context, bitBeautyBitmap: BitBeautyBitmap, degree:Float): BitBeautyBitmap? {
