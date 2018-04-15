@@ -1,6 +1,8 @@
 package com.soumya.wwdablu.bitbeauty
 
+import android.content.Context
 import android.graphics.Bitmap
+import android.support.annotation.ColorInt
 
 /**
  * Created by soumya on 3/23/18.
@@ -14,16 +16,29 @@ class BitBeautyBitmap internal constructor(bitmap: Bitmap, config: Bitmap.Config
     private var mCanRecycleBitmap = false
     private var mBitmapId:String = ""
 
-    /**
-     * Returns the bitmap referred by the BitBeautyBitmap object
-     * @return Bitmap? The actual bitmap or null
-     */
+    val width:Int
+    get() = mBitmap.width
+
+    val height:Int
+    get() = mBitmap.height
+
+    val hasAlpha:Boolean
+    get() = mBitmap.hasAlpha()
+
+    fun getIdentifier() : String {
+        return mBitmapId
+    }
+
     fun getBitmap() : Bitmap? {
         return mBitmap
     }
 
-    fun getIdentifier() : String {
-        return mBitmapId
+    fun erase(@ColorInt color:Int) {
+        BitBeauty.Editor.erase(this, color)
+    }
+
+    fun clone(context: Context): BitBeautyBitmap? {
+        return BitBeauty.Editor.clone(context, this)
     }
 
     /**
