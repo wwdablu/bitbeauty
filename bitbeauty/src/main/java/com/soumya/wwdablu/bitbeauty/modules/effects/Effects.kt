@@ -7,8 +7,7 @@ class Effects {
 
     fun grayscale(bitBeautyBitmap: BitBeautyBitmap) {
 
-        grayscale(bitBeautyBitmap, Rect(0, 0, bitBeautyBitmap.getBitmap()?.width ?: 0,
-                bitBeautyBitmap.getBitmap()?.height ?: 0))
+        grayscale(bitBeautyBitmap, Rect(0, 0, bitBeautyBitmap.width, bitBeautyBitmap.height))
     }
 
     fun grayscale(bitBeautyBitmap: BitBeautyBitmap, applyRect: Rect) {
@@ -25,8 +24,7 @@ class Effects {
 
     fun sepia(bitBeautyBitmap: BitBeautyBitmap) {
 
-        sepia(bitBeautyBitmap, Rect(0, 0, bitBeautyBitmap.getBitmap()?.width ?: 0,
-                bitBeautyBitmap.getBitmap()?.height ?: 0))
+        sepia(bitBeautyBitmap, Rect(0, 0, bitBeautyBitmap.width, bitBeautyBitmap.height))
     }
 
     fun sepia(bitBeautyBitmap: BitBeautyBitmap, applyRect: Rect) {
@@ -43,8 +41,7 @@ class Effects {
 
     fun invert(bitBeautyBitmap: BitBeautyBitmap) {
 
-        invert(bitBeautyBitmap, Rect(0, 0, bitBeautyBitmap.getBitmap()?.width ?: 0,
-                bitBeautyBitmap.getBitmap()?.height ?: 0))
+        invert(bitBeautyBitmap, Rect(0, 0, bitBeautyBitmap.width, bitBeautyBitmap.height))
     }
 
     fun invert(bitBeautyBitmap: BitBeautyBitmap, applyRect: Rect) {
@@ -60,8 +57,7 @@ class Effects {
     }
 
     fun polaroid(bitBeautyBitmap: BitBeautyBitmap) {
-        polaroid(bitBeautyBitmap, Rect(0, 0, bitBeautyBitmap.getBitmap()?.width ?: 0,
-                bitBeautyBitmap.getBitmap()?.height ?: 0))
+        polaroid(bitBeautyBitmap, Rect(0, 0, bitBeautyBitmap.width, bitBeautyBitmap.height))
     }
 
     fun polaroid(bitBeautyBitmap: BitBeautyBitmap, applyRect: Rect) {
@@ -78,8 +74,7 @@ class Effects {
     }
 
     fun blankAndWhite(bitBeautyBitmap: BitBeautyBitmap) {
-        blankAndWhite(bitBeautyBitmap, Rect(0, 0, bitBeautyBitmap.getBitmap()?.width ?: 0,
-                bitBeautyBitmap.getBitmap()?.height ?: 0))
+        blankAndWhite(bitBeautyBitmap, Rect(0, 0, bitBeautyBitmap.width, bitBeautyBitmap.height))
     }
 
     fun blankAndWhite(bitBeautyBitmap: BitBeautyBitmap, applyRect: Rect) {

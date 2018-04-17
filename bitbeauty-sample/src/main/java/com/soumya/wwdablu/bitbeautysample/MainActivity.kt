@@ -27,40 +27,7 @@ class MainActivity : AppCompatActivity() {
 
         //----- Editor -----
         //MaskImage().maskImage(this, findViewById(R.id.iv_image))
-        //MaskImage().animateReveal(this, findViewById(R.id.iv_image))
-
-        BitBeauty.Creator.createBitmapFromDrawable(this, R.drawable.demo)
-            .subscribeWith(object : DisposableObserver<BitBeautyBitmap>() {
-                override fun onComplete() {
-                    //
-                }
-
-                override fun onNext(t: BitBeautyBitmap) {
-
-                    BitBeauty.Effects.grayscale(t)
-
-                    val w = t.getBitmap()?.width ?: 0
-                    var u = (t.getBitmap()?.height!!.toDouble() * 0.25).toInt()
-                    var b = (t.getBitmap()?.height!!.toDouble() * 0.85).toInt()
-
-                    val cropped = BitBeauty.Editor.crop(applicationContext, t, Rect(0, u, w, b))
-
-                    u = (cropped!!.getBitmap()?.height!!.toDouble() * 0.25).toInt()
-                    b = (cropped.getBitmap()?.height!!.toDouble() * 0.75).toInt()
-
-                    //BitBeauty.Effects.grayscale(cropped, Rect((w.toDouble() * 0.25).toInt(), u, (w.toDouble() * 0.75).toInt(), b))
-                    val maskImage = BitBeauty.Creator.createBitmap(applicationContext, 500, 500, Color.TRANSPARENT)
-                    BitBeauty.Shapes.drawCircle(maskImage!!, Color.BLACK, 250F, Point(250, 250))
-
-                    BitBeauty.Editor.mask(cropped, maskImage, Point(790, 740))
-
-                    findViewById<ImageView>(R.id.iv_image).setImageBitmap(maskImage.getBitmap())
-                }
-
-                override fun onError(e: Throwable) {
-                    //
-                }
-            })
+        MaskImage().animateReveal(this, findViewById(R.id.iv_image))
     }
 
 

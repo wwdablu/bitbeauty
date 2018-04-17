@@ -10,10 +10,9 @@ class Editor {
 
     fun crop(context: Context, bitBeautyBitmap: BitBeautyBitmap, cropRect: Rect): BitBeautyBitmap? {
 
-        val w = bitBeautyBitmap.getBitmap()?.width ?: -1
-        val h = bitBeautyBitmap.getBitmap()?.height ?: -1
-
-        if(w == -1 || h == -1 || cropRect.width() > w || cropRect.height() > h) {
+        if(bitBeautyBitmap.width == -1 || bitBeautyBitmap.height == -1 ||
+                cropRect.width() > bitBeautyBitmap.width ||
+                cropRect.height() > bitBeautyBitmap.height) {
             return bitBeautyBitmap
         }
 
@@ -29,8 +28,8 @@ class Editor {
 
     fun crop(context: Context, bitBeautyBitmap: BitBeautyBitmap, point: PointF, radius:Float): BitBeautyBitmap? {
 
-        val w = bitBeautyBitmap.getBitmap()?.width ?: -1
-        val h = bitBeautyBitmap.getBitmap()?.height ?: -1
+        val w = bitBeautyBitmap.width
+        val h = bitBeautyBitmap.height
 
         if(w == -1 || h == -1 || (radius * 2) > w || (radius * 2) > h) {
             return bitBeautyBitmap
@@ -54,8 +53,8 @@ class Editor {
 
     fun clone(context: Context, bitBeautyBitmap: BitBeautyBitmap): BitBeautyBitmap? {
 
-        val bmp: Bitmap = Glide.get(context).bitmapPool.get(bitBeautyBitmap.getBitmap()?.width ?: 0,
-                bitBeautyBitmap.getBitmap()?.height ?: 0, bitBeautyBitmap.getBitmapConfig())
+        val bmp: Bitmap = Glide.get(context).bitmapPool.get(bitBeautyBitmap.width,
+                bitBeautyBitmap.height, bitBeautyBitmap.getBitmapConfig())
 
         val canvas = Canvas(bmp)
         val paint = Paint(Paint.ANTI_ALIAS_FLAG)
@@ -78,11 +77,11 @@ class Editor {
 
     fun combine(srcBitBeautyBitmap: BitBeautyBitmap, dstBitBeautyBitmap: BitBeautyBitmap): BitBeautyBitmap {
 
-        val srcWidth = srcBitBeautyBitmap.getBitmap()?.width ?: -1
-        val srcHeight = srcBitBeautyBitmap.getBitmap()?.height ?: -1
+        val srcWidth = srcBitBeautyBitmap.width
+        val srcHeight = srcBitBeautyBitmap.height
 
-        val dstWidth = dstBitBeautyBitmap.getBitmap()?.width ?: -1
-        val dstHeight = dstBitBeautyBitmap.getBitmap()?.height ?: -1
+        val dstWidth = dstBitBeautyBitmap.width
+        val dstHeight = dstBitBeautyBitmap.height
 
         //If source overlaps destination, then return source
         if(srcWidth >= dstWidth && srcHeight >= dstHeight) {
@@ -102,8 +101,8 @@ class Editor {
 
     fun mask(srcBitBeautyBitmap: BitBeautyBitmap, dstBitBeautyBitmap: BitBeautyBitmap, rectPoint: Point, mode: PorterDuff.Mode = PorterDuff.Mode.SRC_IN) {
 
-        val width = dstBitBeautyBitmap.getBitmap()?.width ?: -1
-        val height = dstBitBeautyBitmap.getBitmap()?.height ?: -1
+        val width = dstBitBeautyBitmap.width
+        val height = dstBitBeautyBitmap.height
 
         val canvas = Canvas(dstBitBeautyBitmap.getBitmap())
         val paint = Paint(Paint.ANTI_ALIAS_FLAG)
@@ -115,8 +114,8 @@ class Editor {
 
     fun rotate(context: Context, bitBeautyBitmap: BitBeautyBitmap, degree:Float): BitBeautyBitmap? {
 
-        val width = bitBeautyBitmap.getBitmap()?.width ?: -1
-        val height = bitBeautyBitmap.getBitmap()?.height ?: -1
+        val width = bitBeautyBitmap.width
+        val height = bitBeautyBitmap.height
 
         if(width == -1 || height == -1) {
             return bitBeautyBitmap
@@ -127,14 +126,10 @@ class Editor {
 
         val rotateBitmap = Bitmap.createBitmap(bitBeautyBitmap.getBitmap(), 0, 0,
                 width, height, matrix, true)
-        val managedRotateBitmap = Glide.get(context).bitmapPool.get(rotateBitmap.width,
-                rotateBitmap.height, bitBeautyBitmap.getBitmapConfig())
-        val canvas = Canvas(managedRotateBitmap)
-        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
-        canvas.drawBitmap(rotateBitmap, 0F, 0F, paint)
-        rotateBitmap.recycle()
 
-        return BitBeautyBitmap(managedRotateBitmap, bitBeautyBitmap.getBitmapConfig())
+        Glide.get(context).bitmapPool.put(rotateBitmap)
+
+        return BitBeautyBitmap(rotateBitmap, bitBeautyBitmap.getBitmapConfig())
     }
 
     internal companion object {
