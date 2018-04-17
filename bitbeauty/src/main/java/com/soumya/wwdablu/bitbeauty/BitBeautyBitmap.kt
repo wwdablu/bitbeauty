@@ -10,7 +10,7 @@ import android.support.annotation.ColorInt
 
 class BitBeautyBitmap internal constructor(bitmap: Bitmap, config: Bitmap.Config) {
 
-    private val mBitmap:Bitmap = bitmap
+    private var mBitmap:Bitmap = bitmap
     private val mBitmapConfig = config
 
     private var mCanRecycleBitmap = false
@@ -41,6 +41,14 @@ class BitBeautyBitmap internal constructor(bitmap: Bitmap, config: Bitmap.Config
         return BitBeauty.Editor.clone(context, this)
     }
 
+    fun resize(context: Context, toWidth:Int, toHeight:Int, keepOriginal: Boolean): BitBeautyBitmap {
+        return BitBeauty.Editor.resize(context,this, toWidth, toHeight, keepOriginal)
+    }
+
+    fun rotate(context: Context, bitBeautyBitmap: BitBeautyBitmap, degree: Float): BitBeautyBitmap? {
+        return BitBeauty.Editor.rotate(context, bitBeautyBitmap, degree)
+    }
+
     /**
      * Allows assigning an identifier to this bitmap so that it is easier to understand where
      * the bitmap is being used. Mainly used during development purpose. Maximum length of the
@@ -65,5 +73,9 @@ class BitBeautyBitmap internal constructor(bitmap: Bitmap, config: Bitmap.Config
 
     internal fun getBitmapConfig(): Bitmap.Config {
         return mBitmapConfig
+    }
+
+    internal fun setBitmap(bitmap: Bitmap) {
+        mBitmap = bitmap
     }
 }

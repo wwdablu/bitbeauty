@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/cl_container"
-    android:background="@android:color/black"
+    android:background="@android:color/darker_gray"
     tools:context="com.soumya.wwdablu.bitbeautysample.MainActivity">
 
     <ImageView
-        android:layout_width="600dp"
-        android:layout_height="300dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/iv_image"
         android:layout_gravity="center" />
 

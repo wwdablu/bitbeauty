@@ -6,6 +6,7 @@ import com.soumya.wwdablu.bitbeauty.modules.editor.Editor
 import com.soumya.wwdablu.bitbeauty.modules.gradient.LinearGradient
 import com.soumya.wwdablu.bitbeauty.modules.gradient.RadialGradient
 import com.soumya.wwdablu.bitbeauty.modules.shapes.Shapes
+import com.soumya.wwdablu.bitbeauty.modules.text.Text
 import com.soumya.wwdablu.bitbeauty.modules.writer.BitmapWriter
 
 /**
@@ -50,6 +51,12 @@ class BitBeauty private constructor() {
          */
         val Shapes: Shapes
         get() = com.soumya.wwdablu.bitbeauty.modules.shapes.Shapes.getInstance()
+
+        /**
+         * Returns a Text instance which can be used to draw shapes on a bitmap
+         */
+        val Text: Text
+        get() = com.soumya.wwdablu.bitbeauty.modules.text.Text.getInstance()
 
         /**
          * Returns a write object which can be used write the bitmap into a file
