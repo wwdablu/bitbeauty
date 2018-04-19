@@ -75,7 +75,38 @@ class Editor {
         (bitBeautyBitmap.getBitmap())?.eraseColor(withColor)
     }
 
+    fun resize(context: Context, bitBeautyBitmap: BitBeautyBitmap, toWidth:Int, toHeight:Int,
+               keepOriginal: Boolean = true): BitBeautyBitmap {
+
+        val scaledBitmap = Bitmap.createScaledBitmap(bitBeautyBitmap.getBitmap(), toWidth, toHeight, false)
+        //val scaledBitmap = Bitmap.createBitmap(bitBeautyBitmap.getBitmap(), 0, 0, )
+        Glide.get(context).bitmapPool.put(scaledBitmap)
+
+        var scaled = bitBeautyBitmap
+        if(keepOriginal) {
+            scaled = BitBeautyBitmap(scaledBitmap, bitBeautyBitmap.getBitmapConfig())
+        } else {
+            scaled.setBitmap(scaledBitmap)
+        }
+
+        return scaled
+    }
+
     fun combine(srcBitBeautyBitmap: BitBeautyBitmap, dstBitBeautyBitmap: BitBeautyBitmap): BitBeautyBitmap {
+
+        val srcWidth = srcBitBeautyBitmap.width
+        val srcHeight = srcBitBeautyBitmap.height
+
+        val dstWidth = dstBitBeautyBitmap.width
+        val dstHeight = dstBitBeautyBitmap.height
+
+        val startX = dstWidth - srcWidth
+        val startY = dstHeight - srcHeight
+
+        return combine(srcBitBeautyBitmap, dstBitBeautyBitmap, Point(startX, startY))
+    }
+
+    fun combine(srcBitBeautyBitmap: BitBeautyBitmap, dstBitBeautyBitmap: BitBeautyBitmap, anchor: Point): BitBeautyBitmap {
 
         val srcWidth = srcBitBeautyBitmap.width
         val srcHeight = srcBitBeautyBitmap.height
@@ -88,8 +119,8 @@ class Editor {
             return srcBitBeautyBitmap
         }
 
-        val startX = dstWidth - srcWidth
-        val startY = dstHeight - srcHeight
+        val startX = anchor.x
+        val startY = anchor.y
 
         val canvas = Canvas(dstBitBeautyBitmap.getBitmap())
         val paint = Paint(Paint.ANTI_ALIAS_FLAG)
