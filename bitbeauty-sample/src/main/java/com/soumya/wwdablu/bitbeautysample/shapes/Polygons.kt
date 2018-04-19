@@ -16,7 +16,7 @@ class Polygons {
 
         val bmp = BitBeauty.Creator.createBitmap(context, 800, 800, Color.BLACK) ?: return
 
-        Observable.interval(0L,1000L, TimeUnit.MILLISECONDS)
+        Observable.interval(5000L,1000L, TimeUnit.MILLISECONDS)
             .takeWhile { t: Long -> t <= 10 }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : DisposableObserver<Long>() {

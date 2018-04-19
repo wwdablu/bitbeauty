@@ -10,6 +10,8 @@ import com.soumya.wwdablu.bitbeauty.BitBeautyBitmap
 import com.soumya.wwdablu.bitbeauty.modules.gradient.Gradient
 import com.soumya.wwdablu.bitbeauty.modules.writer.BitmapWriter
 import com.soumya.wwdablu.bitbeautysample.editors.MaskImage
+import com.soumya.wwdablu.bitbeautysample.shapes.LinkedCubes
+import com.soumya.wwdablu.bitbeautysample.shapes.Polygons
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
@@ -28,6 +30,12 @@ class MainActivity : AppCompatActivity() {
         //----- Editor -----
         //MaskImage().maskImage(this, findViewById(R.id.iv_image))
         //MaskImage().animateReveal(this, findViewById(R.id.iv_image))
+
+//        findViewById<ImageView>(R.id.iv_image).setImageBitmap(
+//                com.soumya.wwdablu.bitbeautysample.gradient.Gradient().linearGradient(applicationContext)?.getBitmap())
+
+//        findViewById<ImageView>(R.id.iv_image).setImageBitmap(
+//                com.soumya.wwdablu.bitbeautysample.gradient.Gradient().radial(applicationContext)?.getBitmap())
 
         imageBitmapFromUrl()
     }
@@ -57,17 +65,23 @@ class MainActivity : AppCompatActivity() {
                     //Resize the original bitmap for better calculation
                     t.resize(applicationContext,600, 600, false)
 
+                    //Draw the small holders on the corners as if they are holding the image
+                    BitBeauty.Shapes.drawCircle(t, Color.WHITE, 30F, Point(0,0))
+                    BitBeauty.Shapes.drawCircle(t, Color.WHITE, 30F, Point(0,600))
+                    BitBeauty.Shapes.drawCircle(t, Color.WHITE, 30F, Point(600,0))
+                    BitBeauty.Shapes.drawCircle(t, Color.WHITE, 30F, Point(600,600))
+
                     //Create the bigger frame (also to make the pin half outside the image)
-                    val frame = BitBeauty.Creator.createBitmap(applicationContext, 700, 1000, Color.TRANSPARENT)
+                    val frame = BitBeauty.Creator.createBitmap(applicationContext, 700, 900, Color.TRANSPARENT)
 
                     //Create the frame to contain the image
-                    val frameContainer = BitBeauty.Creator.createBitmap(applicationContext, 700, 900, Color.WHITE)
+                    val frameContainer = BitBeauty.Creator.createBitmap(applicationContext, 700, 800, Color.WHITE)
                     val ca = IntArray(5)
                     ca[0] = Color.WHITE
                     ca[1] = Color.LTGRAY
-                    ca[1] = Color.GRAY
-                    ca[1] = Color.LTGRAY
-                    ca[2] = Color.WHITE
+                    ca[2] = Color.GRAY
+                    ca[3] = Color.LTGRAY
+                    ca[4] = Color.WHITE
                     BitBeauty.LinearGradient.drawRect(frameContainer!!, 0F, 0F, 700F, 900F, 0F, 100F, 500F, 600F, ca, null, Gradient.Mode.CLAMP)
 
                     BitBeauty.Editor.combine(frameContainer, frame!!, Point(0, 100))
@@ -77,7 +91,7 @@ class MainActivity : AppCompatActivity() {
                     BitBeauty.Shapes.drawCircle(frame, Color.RED, 50F, Point(350, 50))
 
                     //Write the text at the bottom
-                    BitBeauty.Text.write(frame, "Soumya Kanti Kar", 75F, Color.BLACK, PointF(50F, 875F))
+                    BitBeauty.Text.write(frame, "Soumya Kanti Kar", 75F, Color.BLACK, PointF(50F, 810F))
 
                     //Rotate the image 10 degree to give it a tilt feel
                     val rotate = frame.rotate(applicationContext, frame, -10F)
