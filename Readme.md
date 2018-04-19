@@ -17,8 +17,8 @@ dependencies {
 }
 ```
 
-Part - 1
+Part - 1  
 https://medium.com/wwdablu/android-bitmaps-bitbeauty-15fb4fe59388
 
-Part - 2
+Part - 2  
 https://medium.com/wwdablu/android-bitmaps-bitbeauty-part-2-6744cb3bbbcc
