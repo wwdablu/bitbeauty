@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/bitbeauty/bitbeauty.iml" filepath="$PROJECT_DIR$/bitbeauty/bitbeauty.iml" />
-      <module fileurl="file://$PROJECT_DIR$/bitbeauty-sample/bitbeauty-sample.iml" filepath="$PROJECT_DIR$/bitbeauty-sample/bitbeauty-sample.iml" />
-      <module fileurl="file://$PROJECT_DIR$/bitbeautysample.iml" filepath="$PROJECT_DIR$/bitbeautysample.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/bitbeauty.iml" filepath="$PROJECT_DIR$/.idea/modules/bitbeauty.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/bitbeauty/bitbeauty.bitbeauty.iml" filepath="$PROJECT_DIR$/.idea/modules/bitbeauty/bitbeauty.bitbeauty.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/bitbeauty-sample/bitbeauty.bitbeauty-sample.iml" filepath="$PROJECT_DIR$/.idea/modules/bitbeauty-sample/bitbeauty.bitbeauty-sample.iml" />
     </modules>
   </component>
 </project>

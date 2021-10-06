@@ -3,7 +3,7 @@ package com.soumya.wwdablu.bitbeauty.modules.effects
 import android.graphics.*
 import com.soumya.wwdablu.bitbeauty.BitBeautyBitmap
 
-class Effects {
+class Effects internal constructor()  {
 
     fun grayscale(bitBeautyBitmap: BitBeautyBitmap) {
 
@@ -96,12 +96,5 @@ class Effects {
         val paint = Paint(Paint.ANTI_ALIAS_FLAG)
         paint.colorFilter = ColorMatrixColorFilter(colorMatrix)
         canvas.drawBitmap(bitBeautyBitmap.getBitmap(), applyRect, applyRect, paint)
-    }
-
-    internal companion object {
-        private val mInstance: Effects = Effects()
-        fun getInstance(): Effects {
-            return mInstance
-        }
     }
 }

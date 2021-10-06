@@ -2,30 +2,21 @@ package com.soumya.wwdablu.bitbeauty.modules.gradient
 
 import android.graphics.Canvas
 import android.graphics.Paint
-import android.support.annotation.ColorInt
+import androidx.annotation.ColorInt
 import com.soumya.wwdablu.bitbeauty.BitBeautyBitmap
 import android.graphics.RadialGradient as AndroidRadialGradient
 
 /**
  * Created by soumya on 3/25/18.
  */
-class RadialGradient private constructor() {
+class RadialGradient internal constructor() : Gradient() {
 
-    internal companion object {
-        private val mInstance: RadialGradient = RadialGradient()
-        internal fun getInstance(): RadialGradient {
-            return mInstance
-        }
-    }
-
-    @Synchronized
     fun drawCircle(bitBeautyBitmap: BitBeautyBitmap, centerX: Float, centerY: Float, radius: Float,
-               dither:Boolean, @ColorInt colorArray: IntArray, stepArray: FloatArray?, mode: Gradient.Mode) {
+                   dither:Boolean, @ColorInt colorArray: IntArray, stepArray: FloatArray?, mode: Gradient.Mode) {
 
         drawCircle(bitBeautyBitmap, centerX, centerY, centerX, centerY, radius, dither, colorArray, stepArray, mode)
     }
 
-    @Synchronized
     fun drawCircle(bitBeautyBitmap: BitBeautyBitmap, circleX: Float, circleY: Float, radialX: Float,
                    radialY: Float, radius: Float, dither:Boolean, @ColorInt colorArray: IntArray,
                    stepArray: FloatArray?, mode: Gradient.Mode) {
@@ -39,7 +30,6 @@ class RadialGradient private constructor() {
         canvas.drawCircle(circleX, circleY, radius, paint)
     }
 
-    @Synchronized
     fun drawOval(bitBeautyBitmap: BitBeautyBitmap, left: Float, top: Float, right:Float, bottom:Float,
                  dither:Boolean, @ColorInt colorArray: IntArray, stepArray: FloatArray?, mode: Gradient.Mode) {
 

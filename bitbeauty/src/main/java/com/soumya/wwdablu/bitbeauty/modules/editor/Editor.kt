@@ -2,11 +2,11 @@ package com.soumya.wwdablu.bitbeauty.modules.editor
 
 import android.content.Context
 import android.graphics.*
-import android.support.annotation.ColorInt
+import androidx.annotation.ColorInt
 import com.bumptech.glide.Glide
 import com.soumya.wwdablu.bitbeauty.BitBeautyBitmap
 
-class Editor {
+class Editor internal constructor() {
 
     fun crop(context: Context, bitBeautyBitmap: BitBeautyBitmap, cropRect: Rect): BitBeautyBitmap? {
 
@@ -72,14 +72,13 @@ class Editor {
     }
 
     fun erase(bitBeautyBitmap: BitBeautyBitmap, @ColorInt withColor:Int) {
-        (bitBeautyBitmap.getBitmap())?.eraseColor(withColor)
+        (bitBeautyBitmap.getBitmap()).eraseColor(withColor)
     }
 
     fun resize(context: Context, bitBeautyBitmap: BitBeautyBitmap, toWidth:Int, toHeight:Int,
                keepOriginal: Boolean = true): BitBeautyBitmap {
 
         val scaledBitmap = Bitmap.createScaledBitmap(bitBeautyBitmap.getBitmap(), toWidth, toHeight, false)
-        //val scaledBitmap = Bitmap.createBitmap(bitBeautyBitmap.getBitmap(), 0, 0, )
         Glide.get(context).bitmapPool.put(scaledBitmap)
 
         var scaled = bitBeautyBitmap
@@ -161,12 +160,5 @@ class Editor {
         Glide.get(context).bitmapPool.put(rotateBitmap)
 
         return BitBeautyBitmap(rotateBitmap, bitBeautyBitmap.getBitmapConfig())
-    }
-
-    internal companion object {
-        private val mInstance: Editor = Editor()
-        internal fun getInstance(): Editor {
-            return mInstance
-        }
     }
 }

@@ -4,10 +4,10 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.PointF
 import android.graphics.Typeface
-import android.support.annotation.ColorInt
+import androidx.annotation.ColorInt
 import com.soumya.wwdablu.bitbeauty.BitBeautyBitmap
 
-class Text {
+class Text internal constructor() {
 
     fun write(bitBeautyBitmap: BitBeautyBitmap, text: String, textSize: Float, @ColorInt color:Int,
               anchor: PointF, align: Paint.Align = Paint.Align.LEFT, typeface: Typeface? = null) {
@@ -25,12 +25,5 @@ class Text {
         }
 
         canvas.drawText(text, anchor.x, anchor.y, paint)
-    }
-
-    internal companion object {
-        private val mInstance: Text = Text()
-        internal fun getInstance(): Text {
-            return mInstance
-        }
     }
 }

@@ -6,7 +6,7 @@ import com.soumya.wwdablu.bitbeauty.BitBeauty
 import com.soumya.wwdablu.bitbeauty.BitBeautyBitmap
 import com.soumya.wwdablu.bitbeauty.modules.gradient.Gradient
 
-class Gradient {
+class GradientHelper {
 
     fun linearGradient(context: Context): BitBeautyBitmap? {
 

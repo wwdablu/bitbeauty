@@ -4,21 +4,17 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
-import android.support.annotation.ColorInt
-import android.support.annotation.DrawableRes
+import androidx.annotation.ColorInt
+import androidx.annotation.DrawableRes
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.SimpleTarget
-import com.bumptech.glide.request.transition.Transition
 import com.soumya.wwdablu.bitbeauty.BitBeautyBitmap
-import io.reactivex.Observable
-import io.reactivex.ObservableEmitter
-import io.reactivex.ObservableOnSubscribe
-import io.reactivex.android.schedulers.AndroidSchedulers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 /**
  * Created by soumya on 3/24/18.
  */
-class Creator private constructor() {
+class Creator internal constructor() {
 
     fun createBitmap(context: Context, width:Int, height:Int, @ColorInt color:Int) : BitBeautyBitmap? {
         return createBitmap(context, width, height, color, Bitmap.Config.ARGB_8888)
@@ -46,42 +42,25 @@ class Creator private constructor() {
         return BitBeautyBitmap(newBitmap, Bitmap.Config.ARGB_8888)
     }
 
-    fun createBitmapFromDrawable(context: Context, @DrawableRes image:Int) : Observable<BitBeautyBitmap> {
+    suspend fun createBitmapFromDrawable(context: Context, @DrawableRes image:Int) : BitBeautyBitmap {
 
-        return Observable.create(ObservableOnSubscribe<BitBeautyBitmap> { emitter ->
-            val simpleTarget = object : SimpleTarget<Bitmap>() {
-                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-
-                    val bitBeautyBitmap = BitBeautyBitmap(resource, Bitmap.Config.ARGB_8888)
-                    emitter.onNext(bitBeautyBitmap)
-                    emitter.onComplete()
-                }
-            }
-            Glide.with(context).asBitmap().load(image).into(simpleTarget)
-        }).subscribeOn(AndroidSchedulers.mainThread())
+        return withContext(Dispatchers.IO) {
+            BitBeautyBitmap(Glide.with(context)
+                .asBitmap()
+                .load(image)
+                .submit()
+                .get(), Bitmap.Config.ARGB_8888)
+        }
     }
 
-    fun createBitmapFromUrl(context: Context, url:String): Observable<BitBeautyBitmap> {
+    suspend fun createBitmapFromUrl(context: Context, url:String): BitBeautyBitmap {
 
-        return Observable.create(ObservableOnSubscribe<BitBeautyBitmap> { emitter ->
-            val simpleTarget = object : SimpleTarget<Bitmap>() {
-                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-
-                    val bitBeautyBitmap = BitBeautyBitmap(resource, Bitmap.Config.ARGB_8888)
-                    emitter.onNext(bitBeautyBitmap)
-                    emitter.onComplete()
-                }
-            }
-            Glide.with(context).asBitmap().load(url).into(simpleTarget)
-        }).subscribeOn(AndroidSchedulers.mainThread())
-    }
-
-    internal companion object {
-        private var mInstance: Creator = Creator()
-
-        @Synchronized
-        internal fun getInstance() : Creator {
-            return mInstance
+        return withContext(Dispatchers.IO) {
+            BitBeautyBitmap(Glide.with(context)
+                .asBitmap()
+                .load(url)
+                .submit()
+                .get(), Bitmap.Config.ARGB_8888)
         }
     }
 }

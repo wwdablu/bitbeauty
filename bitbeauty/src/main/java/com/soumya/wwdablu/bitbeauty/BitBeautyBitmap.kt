@@ -2,7 +2,7 @@ package com.soumya.wwdablu.bitbeauty
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.support.annotation.ColorInt
+import androidx.annotation.ColorInt
 
 /**
  * Created by soumya on 3/23/18.
@@ -29,7 +29,7 @@ class BitBeautyBitmap internal constructor(bitmap: Bitmap, config: Bitmap.Config
         return mBitmapId
     }
 
-    fun getBitmap() : Bitmap? {
+    fun getBitmap() : Bitmap {
         return mBitmap
     }
 

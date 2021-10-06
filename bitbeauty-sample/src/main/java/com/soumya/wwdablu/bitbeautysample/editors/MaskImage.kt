@@ -8,108 +8,70 @@ import android.widget.ImageView
 import com.soumya.wwdablu.bitbeauty.BitBeauty
 import com.soumya.wwdablu.bitbeauty.BitBeautyBitmap
 import com.soumya.wwdablu.bitbeautysample.R
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.observers.DisposableObserver
-import io.reactivex.schedulers.Schedulers
-import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class MaskImage {
 
     fun maskImage(context: Context, imageView: ImageView) {
 
-        BitBeauty.Creator.createBitmapFromDrawable(context, R.drawable.sunflower)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeWith(object : DisposableObserver<BitBeautyBitmap>() {
-                override fun onComplete() {
-                    //
-                }
+        CoroutineScope(Dispatchers.Main).launch {
+            val beautyBitmap = BitBeauty.Creator.createBitmapFromDrawable(context, R.drawable.sunflower)
 
-                override fun onNext(t: BitBeautyBitmap) {
-                    val hexagonBmp: BitBeautyBitmap? = BitBeauty.Creator.createBitmap(context,
-                            t.getBitmap()?.width ?: 0, t.getBitmap()?.height ?: 0, Color.TRANSPARENT)
+            val hexagonBmp: BitBeautyBitmap? = BitBeauty.Creator.createBitmap(context,
+                beautyBitmap.getBitmap().width, beautyBitmap.getBitmap().height, Color.TRANSPARENT)
 
-                    hexagonBmp ?: return
-                    hexagonBmp.getBitmap() ?: return
+            hexagonBmp ?: return@launch
 
-                    BitBeauty.Shapes.drawPolygon(hexagonBmp, Color.BLACK, ((hexagonBmp.getBitmap()?.width?.toFloat() ?: 0F) / 2F) - 50F,
-                            ((hexagonBmp.getBitmap()?.height?.toFloat() ?: 0F) / 2F) - 50F, 150F, 6)
+            BitBeauty.Shapes.drawPolygon(hexagonBmp, Color.BLACK, ((hexagonBmp.getBitmap().width.toFloat()) / 2F) - 50F,
+                ((hexagonBmp.getBitmap().height.toFloat()) / 2F) - 50F, 150F, 6)
 
-                    BitBeauty.Editor.mask(t, hexagonBmp, Point(0,0))
-                    imageView.setImageBitmap((hexagonBmp.getBitmap()))
-                }
-
-                override fun onError(e: Throwable) {
-                    //
-                }
-            })
+            BitBeauty.Editor.mask(beautyBitmap, hexagonBmp, Point(0,0))
+            imageView.setImageBitmap((hexagonBmp.getBitmap()))
+        }
     }
 
     fun animateReveal(context: Context, imageView: ImageView) {
 
-        BitBeauty.Creator.createBitmapFromDrawable(context, R.drawable.sunflower)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableObserver<BitBeautyBitmap>() {
-                    override fun onComplete() {
-                        //
-                    }
-
-                    override fun onNext(t: BitBeautyBitmap) {
-                        reveal(context, imageView, t)
-                    }
-
-                    override fun onError(e: Throwable) {
-                        //
-                    }
-                })
+        CoroutineScope(Dispatchers.Main).launch {
+            val beautyBitmap = BitBeauty.Creator.createBitmapFromDrawable(context, R.drawable.sunflower)
+            reveal(context, imageView, beautyBitmap)
+        }
     }
 
-    private fun reveal(context: Context, imageView: ImageView, bitBeautyBitmap: BitBeautyBitmap) {
+    private suspend fun reveal(context: Context, imageView: ImageView, bitBeautyBitmap: BitBeautyBitmap) {
 
-        val maskBitmap = BitBeauty.Creator.createBitmap(context, bitBeautyBitmap.getBitmap()?.width ?: 0,
-                bitBeautyBitmap.getBitmap()?.height ?: 0, Color.TRANSPARENT) ?: return
+        val maskBitmap = BitBeauty.Creator.createBitmap(context, bitBeautyBitmap.getBitmap().width,
+                bitBeautyBitmap.getBitmap().height, Color.TRANSPARENT) ?: return
 
         val canvasBitmap = BitBeauty.Editor.clone(context, maskBitmap) ?: return
 
-        Observable.interval(8, TimeUnit.MILLISECONDS)
-            .takeWhile({ t:Long -> t <= 1200})
-            .subscribeOn(Schedulers.computation())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeWith(object : DisposableObserver<Long>() {
-                override fun onComplete() {
-                    //
-                }
+        var revealStep = 0
+        while (revealStep++ != 1200) {
+            delay(8L)
+            if(revealStep <= 600) {
+                BitBeauty.Editor.erase(maskBitmap, Color.TRANSPARENT)
 
-                override fun onNext(t: Long) {
+                BitBeauty.Shapes.drawCircle(maskBitmap, Color.BLACK, revealStep.toFloat(), Point(
+                    300, 300
+                ))
 
-                    if(t <= 600) {
-                        BitBeauty.Editor.erase(maskBitmap, Color.TRANSPARENT)
+                BitBeauty.Editor.mask(bitBeautyBitmap, maskBitmap, Point(0,0))
+                BitBeauty.Editor.copy(maskBitmap, canvasBitmap)
 
-                        BitBeauty.Shapes.drawCircle(maskBitmap, Color.BLACK, t.toFloat(), Point(
-                                300, 300
-                        ))
+                imageView.setImageBitmap((canvasBitmap.getBitmap()))
+            } else {
+                BitBeauty.Editor.erase(maskBitmap, Color.TRANSPARENT)
+                BitBeauty.Shapes.drawCircle(maskBitmap, Color.BLACK, (1200 - revealStep).toFloat(), Point(
+                    300, 300
+                ))
 
-                        BitBeauty.Editor.mask(bitBeautyBitmap, maskBitmap, Point(0,0))
-                        BitBeauty.Editor.copy(maskBitmap, canvasBitmap)
-
-                        imageView.setImageBitmap((canvasBitmap.getBitmap()))
-                    } else {
-                        BitBeauty.Editor.erase(maskBitmap, Color.TRANSPARENT)
-                        BitBeauty.Shapes.drawCircle(maskBitmap, Color.BLACK, (1200 - t).toFloat(), Point(
-                                300, 300
-                        ))
-
-                        BitBeauty.Editor.mask(bitBeautyBitmap, maskBitmap, Point(0,0), PorterDuff.Mode.SRC_IN)
-                        BitBeauty.Editor.copy(maskBitmap, canvasBitmap)
-                        imageView.setImageBitmap((canvasBitmap.getBitmap()))
-                    }
-                }
-
-                override fun onError(e: Throwable) {
-                    //
-                }
-            })
+                BitBeauty.Editor.mask(bitBeautyBitmap, maskBitmap, Point(0,0), PorterDuff.Mode.SRC_IN)
+                BitBeauty.Editor.copy(maskBitmap, canvasBitmap)
+                imageView.setImageBitmap((canvasBitmap.getBitmap()))
+            }
+        }
     }
 }

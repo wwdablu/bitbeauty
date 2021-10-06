@@ -5,14 +5,14 @@ import android.graphics.Shader
 /**
  * Created by soumya on 3/25/18.
  */
-class Gradient {
+abstract class Gradient internal constructor() {
 
     companion object {
         internal fun convertShaderMode(mode:Gradient.Mode) : Shader.TileMode {
             return when (mode) {
-                Gradient.Mode.MIRROR -> Shader.TileMode.MIRROR
-                Gradient.Mode.REPEAT -> Shader.TileMode.REPEAT
-                Gradient.Mode.CLAMP -> Shader.TileMode.CLAMP
+                Mode.MIRROR -> Shader.TileMode.MIRROR
+                Mode.REPEAT -> Shader.TileMode.REPEAT
+                Mode.CLAMP -> Shader.TileMode.CLAMP
             }
         }
     }

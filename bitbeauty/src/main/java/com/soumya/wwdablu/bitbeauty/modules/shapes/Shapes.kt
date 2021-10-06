@@ -1,10 +1,10 @@
 package com.soumya.wwdablu.bitbeauty.modules.shapes
 
 import android.graphics.*
-import android.support.annotation.ColorInt
+import androidx.annotation.ColorInt
 import com.soumya.wwdablu.bitbeauty.BitBeautyBitmap
 
-class Shapes {
+class Shapes internal constructor() {
 
     fun drawCircle(bitBeautyBitmap: BitBeautyBitmap, @ColorInt colorInt: Int, radius: Float, center: Point) {
 
@@ -69,12 +69,5 @@ class Shapes {
         paint.color = colorInt
 
         canvas.drawPath(path, paint)
-    }
-
-    internal companion object {
-        private val mInstance: Shapes = Shapes()
-        internal fun getInstance(): Shapes {
-            return mInstance
-        }
     }
 }
