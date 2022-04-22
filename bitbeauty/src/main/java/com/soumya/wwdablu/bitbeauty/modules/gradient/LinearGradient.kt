@@ -21,8 +21,8 @@ class LinearGradient internal constructor() : Gradient()  {
                  rectEndY:Float, gradStartX:Float, gradStartY:Float, gradEndX:Float, gradEndY:Float,
                  @ColorInt colorArray: IntArray, stepArray: FloatArray?, mode:Gradient.Mode) {
 
-        val shaderModel = Gradient.convertShaderMode(mode)
-        val linearGradient = AndroidLinearGradient(gradStartX, gradStartY, gradEndX, gradEndY, colorArray, stepArray, shaderModel)
+        val linearGradient = AndroidLinearGradient(gradStartX, gradStartY, gradEndX, gradEndY,
+            colorArray, stepArray, convertShaderMode(mode))
 
         val canvas = Canvas(bitBeautyBitmap.getBitmap())
         val paint = Paint(Paint.ANTI_ALIAS_FLAG)

@@ -12,14 +12,14 @@ import android.graphics.RadialGradient as AndroidRadialGradient
 class RadialGradient internal constructor() : Gradient() {
 
     fun drawCircle(bitBeautyBitmap: BitBeautyBitmap, centerX: Float, centerY: Float, radius: Float,
-                   dither:Boolean, @ColorInt colorArray: IntArray, stepArray: FloatArray?, mode: Gradient.Mode) {
+                   dither:Boolean, @ColorInt colorArray: IntArray, stepArray: FloatArray?, mode: Mode) {
 
         drawCircle(bitBeautyBitmap, centerX, centerY, centerX, centerY, radius, dither, colorArray, stepArray, mode)
     }
 
     fun drawCircle(bitBeautyBitmap: BitBeautyBitmap, circleX: Float, circleY: Float, radialX: Float,
                    radialY: Float, radius: Float, dither:Boolean, @ColorInt colorArray: IntArray,
-                   stepArray: FloatArray?, mode: Gradient.Mode) {
+                   stepArray: FloatArray?, mode: Mode) {
 
         val shader = createRadialGradient(radialX, radialY, radius, colorArray, stepArray, mode)
 
@@ -31,7 +31,7 @@ class RadialGradient internal constructor() : Gradient() {
     }
 
     fun drawOval(bitBeautyBitmap: BitBeautyBitmap, left: Float, top: Float, right:Float, bottom:Float,
-                 dither:Boolean, @ColorInt colorArray: IntArray, stepArray: FloatArray?, mode: Gradient.Mode) {
+                 dither:Boolean, @ColorInt colorArray: IntArray, stepArray: FloatArray?, mode: Mode) {
 
         val radius = if ((left+right)/2 > (top+bottom)/2) (left+right)/2 else (top+bottom)/2
         val shader = createRadialGradient((left+right)/2, (top+bottom)/2, radius, colorArray, stepArray, mode)
@@ -46,7 +46,7 @@ class RadialGradient internal constructor() : Gradient() {
     private fun createRadialGradient(centerX:Float, centerY:Float, radius:Float, @ColorInt colorArray: IntArray,
                      stepArray: FloatArray?, mode:Gradient.Mode) : AndroidRadialGradient {
 
-        val shaderModel = Gradient.convertShaderMode(mode)
+        val shaderModel = convertShaderMode(mode)
         return AndroidRadialGradient(centerX, centerY, radius, colorArray, stepArray, shaderModel)
     }
 }

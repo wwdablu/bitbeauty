@@ -13,17 +13,14 @@ class BitBeautyBitmap internal constructor(bitmap: Bitmap, config: Bitmap.Config
     private var mBitmap:Bitmap = bitmap
     private val mBitmapConfig = config
 
-    private var mCanRecycleBitmap = false
     private var mBitmapId:String = ""
 
-    val width:Int
-    get() = mBitmap.width
+    var width:Int = mBitmap.width
+    private set
+    var height:Int = mBitmap.height
+    private set
 
-    val height:Int
-    get() = mBitmap.height
-
-    val hasAlpha:Boolean
-    get() = mBitmap.hasAlpha()
+    val hasAlpha:Boolean = mBitmap.hasAlpha()
 
     fun getIdentifier() : String {
         return mBitmapId
@@ -49,33 +46,29 @@ class BitBeautyBitmap internal constructor(bitmap: Bitmap, config: Bitmap.Config
         return BitBeauty.Editor.rotate(context, bitBeautyBitmap, degree)
     }
 
-    /**
-     * Allows assigning an identifier to this bitmap so that it is easier to understand where
-     * the bitmap is being used. Mainly used during development purpose. Maximum length of the
-     * identifier can be 50 characters
-     */
     fun setIdentifier(identifier:String) {
-
-        var correctedIdentifier = identifier
-        if(identifier.length >= 50) {
-            correctedIdentifier = identifier.substring(0, 49)
-        }
-        mBitmapId = correctedIdentifier
+        mBitmapId = identifier
     }
 
     /*
      * Internal methods which are only available for the module and not to outside world
      */
 
-    internal fun canRecycle(boolean: Boolean) {
-        mCanRecycleBitmap = boolean
+    internal fun isValid() : Boolean {
+        return !isRecycled() && width >= 1 && height >= 1
     }
+
+    internal fun isInvalid() = !isValid()
+
+    internal fun isRecycled() = mBitmap.isRecycled
 
     internal fun getBitmapConfig(): Bitmap.Config {
         return mBitmapConfig
     }
 
     internal fun setBitmap(bitmap: Bitmap) {
+        width = bitmap.width
+        height = bitmap.height
         mBitmap = bitmap
     }
 }
